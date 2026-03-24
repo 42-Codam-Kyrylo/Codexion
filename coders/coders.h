@@ -23,6 +23,7 @@ typedef struct s_data
 int				parse(t_data *data, int argc, char *argv[]);
 int				ft_isdigit(int c);
 int				ft_isdigitstr(char *s);
+long long		ft_atoll(const char *str);
 
 #endif
 

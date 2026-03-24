@@ -34,6 +34,9 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+run: $(NAME)
+	./$(NAME) 5 1000 100 100 100 25 50 fifo
+
+.PHONY: all clean fclean re run
 
 -include $(DEP)

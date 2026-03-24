@@ -11,15 +11,27 @@ int	ft_isdigit(int c)
 
 int	ft_isdigitstr(char *s)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (s[i])
 	{
 		if (!ft_isdigit(s[i]))
 			return (0);
-
 		i++;
 	}
-
 	return (1);
+}
+
+long long	ft_atoll(const char *str)
+{
+	long long res;
+
+	res = 0;
+	while (*str >= '0' && *str <= '9')
+	{
+		res = res * 10 + (*str - '0');
+		str++;
+	}
+	return (res);
 }
