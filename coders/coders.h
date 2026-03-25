@@ -6,18 +6,29 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/03/24 20:16:39 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/03/24 20:16:40 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/03/25 20:30:49 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
+// compile -> debug -> refactor 
 
 #ifndef CODERS_H
 # define CODERS_H
 
+#include <pthread.h>
+
 typedef enum e_sched
 {
-	SCHED_FIFO,
-	SCHED_EDF,
+	CODERS_SCHED_FIFO,
+	CODERS_SCHED_EDF,
 }				t_sched;
+
+typedef struct s_dongle 
+{
+	pthread_mutex_t mutex;
+	long long last_released_at;
+} t_dongle;
+
 
 typedef struct s_data
 {

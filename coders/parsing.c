@@ -47,9 +47,9 @@ int	parse(t_data *data, int argc, char *argv[])
 	if (parse_numeric_arguments(data, argv) != 0)
 		return (1);
 	if (strcmp(argv[8], "fifo") == 0)
-		data->scheduler = SCHED_FIFO;
+		data->scheduler = CODERS_SCHED_FIFO;
 	else if (strcmp(argv[8], "edf") == 0)
-		data->scheduler = SCHED_EDF;
+		data->scheduler = CODERS_SCHED_EDF;
 	else
 	{
 		printf("Error: Invalid scheduler. Use 'fifo' or 'edf'.\n");

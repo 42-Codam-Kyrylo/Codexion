@@ -40,9 +40,9 @@ void	print_data(t_data *data)
 
 	if (!data)
 		return ;
-	if (data->scheduler == SCHED_FIFO)
+	if (data->scheduler == CODERS_SCHED_FIFO)
 		scheduler = "FIFO";
-	else if (data->scheduler == SCHED_EDF)
+	else if (data->scheduler == CODERS_SCHED_EDF)
 		scheduler = "EDF";
 	else
 		scheduler = "UNKNOWN";
