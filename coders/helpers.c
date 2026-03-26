@@ -6,11 +6,12 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/03/24 20:16:36 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/03/24 20:16:37 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/03/26 16:13:53 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coders.h"
+#include <sys/time.h>
 
 int	ft_isdigit(int c)
 {
@@ -37,7 +38,7 @@ int	ft_isdigitstr(char *s)
 
 long long	ft_atoll(const char *str)
 {
-	long long res;
+	long long	res;
 
 	res = 0;
 	while (*str >= '0' && *str <= '9')
@@ -46,4 +47,13 @@ long long	ft_atoll(const char *str)
 		str++;
 	}
 	return (res);
+}
+
+long long	get_current_time(void)
+{
+	struct timeval tv;
+
+	if (gettimeofday(&tv, NULL) == -1)
+		return (0);
+	return ((long long)tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
