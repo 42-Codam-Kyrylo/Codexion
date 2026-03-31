@@ -42,7 +42,6 @@ void	swap_heap(t_node *a, t_node *b)
 void	insert_heap(t_heap *heap, t_node node)
 {
 	int	i;
-	int	parent;
 
 	if (heap->size == heap->capacity)
 	{
@@ -60,7 +59,7 @@ void	insert_heap(t_heap *heap, t_node node)
 	}
 }
 
-void	heapify_down(t_heap *heap, int i)
+void	heapify(t_heap *heap, int i)
 {
 	int	smallest;
 	int	left;
@@ -69,8 +68,17 @@ void	heapify_down(t_heap *heap, int i)
 	smallest = i;
 	left = get_left_child(i);
 	right = get_right_child(i);
-
-	// if (left ) // finish
+	if (left < heap->size
+		&& heap->array[left].priority < heap->array[smallest].priority)
+		smallest = left;
+	if (right < heap->size
+		&& heap->array[right].priority < heap->array[smallest].priority)
+		smallest = right;
+	if (smallest != i)
+	{
+		swap_heap(&heap->array[i], &heap->array[smallest]);
+		heapify(heap, smallest);
+	}
 }
 
 t_node	pop_heap(t_heap *heap)
@@ -82,6 +90,6 @@ t_node	pop_heap(t_heap *heap)
 	head = heap->array[0];
 	heap->array[0] = heap->array[heap->size - 1];
 	heap->size--;
-	heapify_down(heap, 0);
+	heapify(heap, 0);
 	return (head);
 }

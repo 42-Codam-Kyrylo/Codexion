@@ -22,7 +22,9 @@ SRC = \
 	main.c \
 	helpers.c \
 	parsing.c \
-	#add another files 
+	heap.c \
+	heap_helpers.c \
+	
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:.o=.d)

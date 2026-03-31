@@ -1,3 +1,4 @@
 {
-	"editor.defaultFormatter": "keyhr.42-c-format"
+	"editor.defaultFormatter": "keyhr.42-c-format",
+	"workbench.colorTheme": "Default Dark Modern"
 }
