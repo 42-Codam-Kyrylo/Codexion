@@ -67,7 +67,7 @@ typedef struct s_dongle
 	int					id;
 	t_dongle_status		status;
 	long long			last_released_at;
-	t_heap				*queue;
+	t_heap				queue;
 	pthread_mutex_t		mutex;
 	pthread_cond_t		cond;
 }						t_dongle;
@@ -103,7 +103,6 @@ void					insert_heap(t_heap *heap, t_node node);
 t_node					pop_heap(t_heap *heap);
 
 int						get_left_child(int i);
-
 int						get_right_child(int i);
 int						get_parent(int i);
 
