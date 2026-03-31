@@ -6,7 +6,7 @@
 #    By: kvolynsk <kvolynsk@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2026/03/24 20:16:47 by kvolynsk      #+#    #+#                  #
-#    Updated: 2026/03/24 20:16:48 by kvolynsk      ########   odam.nl          #
+#    Updated: 2026/03/31 22:13:38 by kvolynsk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC = \
 	main.c \
 	helpers.c \
 	parsing.c \
+	#add another files 
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:.o=.d)
