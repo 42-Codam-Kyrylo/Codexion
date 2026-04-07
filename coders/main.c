@@ -6,7 +6,7 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/03/20 14:14:25 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/03/20 18:19:51 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/04/07 22:18:11 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ int	main(int argc, char *argv[])
 		free(data);
 		return (1);
 	}
+
+	
+
+
+	
 	// work
 	print_data(data);
 	free(data);
