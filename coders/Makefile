@@ -26,8 +26,8 @@ SRC = \
 	$(SRC_DIR)/core/parsing.c \
 	$(SRC_DIR)/heap/heap.c \
 	$(SRC_DIR)/heap/heap_helpers.c \
-	$(SRC_DIR)/init/initialization.c \
-	$(SRC_DIR)/init/initialization_helpers.c \
+	$(SRC_DIR)/init/initialization_coders.c \
+	$(SRC_DIR)/init/initialization_common.c \
 	$(SRC_DIR)/coder/coder_routine.c
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
