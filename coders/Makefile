@@ -26,6 +26,7 @@ SRC = \
 	heap_helpers.c \
 	initialization.c \
 	initialization_helpers.c \
+	coder_routine.c \
 	
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

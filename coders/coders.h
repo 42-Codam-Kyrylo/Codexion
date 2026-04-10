@@ -87,8 +87,8 @@ struct					s_data
 	long long			dongle_cooldown;
 
 	long long			start_time;
-	int					simulation_end;
-	// pthread_mutex_t stop_mutex;??
+	int					is_simulation_end;
+	pthread_mutex_t		stop_mutex;
 	t_sched				scheduler;
 
 	pthread_mutex_t		print_mutex;
@@ -118,5 +118,9 @@ void					*coder_routine(void *arg);
 int						start_coders(t_data *data);
 int						join_coders(t_data *data);
 int						init_start_time(t_data *data);
+
+long long				get_timestamp(long long simulation_start_time);
+void					ft_sleep(long long time);
+void					init_mutexes(t_data *data);
 
 #endif

@@ -18,6 +18,8 @@ void		print_data(t_data *data);
 
 static int	cleanup_data(t_data *data)
 {
+	pthread_mutex_destroy(&data->stop_mutex);
+	pthread_mutex_destroy(&data->print_mutex);
 	free(data->coders);
 	free(data);
 	return (1);
@@ -51,11 +53,11 @@ int	main(int argc, char *argv[])
 		free(data);
 		return (1);
 	}
+	init_mutexes(data);
 	print_data(data);
 	if (launch_coders(data) != 0)
 		return (cleanup_data(data));
-	free(data->coders);
-	free(data);
+	cleanup_data(data);
 	return (0);
 }
 

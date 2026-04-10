@@ -55,6 +55,7 @@ int	parse(t_data *data, int argc, char *argv[])
 		printf("Error: Invalid scheduler. Use 'fifo' or 'edf'.\n");
 		return (1);
 	}
+	data->is_simulation_end = 0;
 	return (0);
 }
 

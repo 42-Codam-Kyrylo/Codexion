@@ -75,11 +75,8 @@ int	join_coders(t_data *data)
 	return (0);
 }
 
-void	*coder_routine(void *arg)
+void	init_mutexes(t_data *data)
 {
-	t_coder	*coder;
-
-	coder = (t_coder *)arg;
-	printf("Coder with ID: %d started\n", coder->id);
-	return (NULL);
+	pthread_mutex_init(&data->stop_mutex, NULL);
+	pthread_mutex_init(&data->print_mutex, NULL);
 }
