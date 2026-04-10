@@ -4,7 +4,7 @@
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
-/*                                                   +#+#+#+#+#+  
+/*                                                   +#+#+#+#+#+
 	+#+           */
 /*   Created: 2026/03/20 14:14:25 by kvolynsk      #+#    #+#                 */
 /*   Updated: 2026/04/07 22:18:11 by kvolynsk        ########   odam.nl         */
@@ -17,13 +17,38 @@
 
 void		print_data(t_data *data);
 
-static int	cleanup_data(t_data *data)
+static int	cleanup_data(t_data *data, int destroy_core_mutexes,
+		int destroy_dongles, int destroy_dongle_mutexes)
 {
-	pthread_mutex_destroy(&data->stop_mutex);
-	pthread_mutex_destroy(&data->print_mutex);
+	if (destroy_dongles)
+		cleanup_dongles_range(data, data->number_of_coders,
+			destroy_dongle_mutexes);
+	if (destroy_core_mutexes)
+	{
+		pthread_mutex_destroy(&data->stop_mutex);
+		pthread_mutex_destroy(&data->print_mutex);
+	}
 	free(data->coders);
 	free(data);
 	return (1);
+}
+
+static int	init_resources(t_data *data, int *core_mutexes, int *dongles,
+		int *dongle_mutexes)
+{
+	*core_mutexes = 0;
+	*dongles = 0;
+	*dongle_mutexes = 0;
+	if (init_data_mutexes(data) != 0)
+		return (1);
+	*core_mutexes = 1;
+	if (init_dongles(data) != 0)
+		return (1);
+	*dongles = 1;
+	if (init_dongle_mutexes(data) != 0)
+		return (1);
+	*dongle_mutexes = 1;
+	return (0);
 }
 
 static int	launch_coders(t_data *data)
@@ -44,6 +69,9 @@ static int	launch_coders(t_data *data)
 int	main(int argc, char *argv[])
 {
 	t_data	*data;
+	int		core_mutexes;
+	int		dongles;
+	int		dongle_mutexes;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -54,11 +82,14 @@ int	main(int argc, char *argv[])
 		free(data);
 		return (1);
 	}
-	init_mutexes(data);
+	if (init_resources(data, &core_mutexes, &dongles, &dongle_mutexes) != 0)
+	{
+		return (cleanup_data(data, core_mutexes, dongles, dongle_mutexes));
+	}
 	print_data(data);
 	if (launch_coders(data) != 0)
-		return (cleanup_data(data));
-	cleanup_data(data);
+		return (cleanup_data(data, core_mutexes, dongles, dongle_mutexes));
+	cleanup_data(data, core_mutexes, dongles, dongle_mutexes);
 	return (0);
 }
 

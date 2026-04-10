@@ -6,7 +6,7 @@
 #    By: kvolynsk <kvolynsk@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2026/03/24 20:16:47 by kvolynsk      #+#    #+#                  #
-#    Updated: 2026/03/31 22:13:38 by kvolynsk      ########   odam.nl          #
+#    Updated: 2026/04/10 20:49:02 by kvolynsk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC = \
 	$(SRC_DIR)/heap/heap_helpers.c \
 	$(SRC_DIR)/init/initialization_coders.c \
 	$(SRC_DIR)/init/initialization_common.c \
+	$(SRC_DIR)/init/initialization_dongles.c \
 	$(SRC_DIR)/coder/coder_routine.c
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

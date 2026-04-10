@@ -70,7 +70,7 @@ typedef struct s_dongle
 	int					id;
 	t_dongle_status		status;
 	long long			last_released_at;
-	t_heap				queue;
+	t_heap				*queue;
 	pthread_mutex_t		mutex;
 	pthread_cond_t		cond;
 }						t_dongle;
@@ -118,9 +118,13 @@ void					*coder_routine(void *arg);
 int						start_coders(t_data *data);
 int						join_coders(t_data *data);
 int						init_start_time(t_data *data);
+int						init_dongles(t_data *data);
+int						init_dongle_mutexes(t_data *data);
+void					cleanup_dongles_range(t_data *data, int count,
+							int destroy_mutexes);
 
 long long				get_timestamp(long long simulation_start_time);
 void					ft_sleep(long long time);
-void					init_mutexes(t_data *data);
+int						init_data_mutexes(t_data *data);
 
 #endif
