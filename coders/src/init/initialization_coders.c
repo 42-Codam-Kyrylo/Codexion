@@ -3,17 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int	init_start_time(t_data *data)
-{
-	long long	time;
-
-	time = get_current_time();
-	if (!time)
-		return (1);
-	data->start_time = time;
-	return (0);
-}
-
 int	init_coders(t_data *data)
 {
 	int	i;
@@ -58,8 +47,8 @@ int	start_coders(t_data *data)
 
 int	join_coders(t_data *data)
 {
-	int i;
-	int status;
+	int	i;
+	int	status;
 
 	i = 0;
 	while (i < data->number_of_coders)
