@@ -48,7 +48,7 @@ long long	ft_atoll(const char *str)
 	}
 	return (res);
 }
-
+// returns current time in ms = (seconds *1000) + (microseconds / 1000)
 long long	get_current_time(void)
 {
 	struct timeval tv;

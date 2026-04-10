@@ -85,6 +85,10 @@ struct					s_data
 	int					number_of_compiles_required;
 
 	long long			dongle_cooldown;
+
+	long long			start_time;
+	int					simulation_end;
+	// pthread_mutex_t stop_mutex;??
 	t_sched				scheduler;
 
 	pthread_mutex_t		print_mutex;
@@ -113,5 +117,6 @@ int						init_coders(t_data *data);
 void					*coder_routine(void *arg);
 int						start_coders(t_data *data);
 int						join_coders(t_data *data);
+int						init_start_time(t_data *data);
 
 #endif

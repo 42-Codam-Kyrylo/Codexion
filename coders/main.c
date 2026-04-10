@@ -25,7 +25,9 @@ static int	cleanup_data(t_data *data)
 
 static int	launch_coders(t_data *data)
 {
-	if (init_coders(data) != 0)
+	if (init_start_time(data) != 0)
+		printf("Error: init_start_time failed\n");
+	else if (init_coders(data) != 0)
 		printf("Error: init_coders failed\n");
 	else if (start_coders(data) != 0)
 		printf("Error: start_coders failed\n");

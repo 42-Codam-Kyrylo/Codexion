@@ -3,6 +3,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+int	init_start_time(t_data *data)
+{
+	long long	time;
+
+	time = get_current_time();
+	if (!time)
+		return (1);
+	data->start_time = time;
+	return (0);
+}
+
 int	init_coders(t_data *data)
 {
 	int	i;
