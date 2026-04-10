@@ -15,19 +15,20 @@ NAME = coders
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 DEPFLAGS = -MMD -MP
+INC_DIR = include
+SRC_DIR = src
 
 OBJ_DIR = obj
 
 SRC = \
-	main.c \
-	helpers.c \
-	parsing.c \
-	heap.c \
-	heap_helpers.c \
-	initialization.c \
-	initialization_helpers.c \
-	coder_routine.c \
-	
+	$(SRC_DIR)/core/main.c \
+	$(SRC_DIR)/core/helpers.c \
+	$(SRC_DIR)/core/parsing.c \
+	$(SRC_DIR)/heap/heap.c \
+	$(SRC_DIR)/heap/heap_helpers.c \
+	$(SRC_DIR)/init/initialization.c \
+	$(SRC_DIR)/init/initialization_helpers.c \
+	$(SRC_DIR)/coder/coder_routine.c
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:.o=.d)
@@ -39,8 +40,8 @@ $(NAME): $(OBJ)
 
 
 $(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -I$(INC_DIR) $(DEPFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)
