@@ -24,6 +24,8 @@ SRC = \
 	parsing.c \
 	heap.c \
 	heap_helpers.c \
+	initialization.c \
+	initialization_helpers.c \
 	
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

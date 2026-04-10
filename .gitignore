@@ -1,2 +1,4 @@
 coders/obj
 .vscode
+
+*.out

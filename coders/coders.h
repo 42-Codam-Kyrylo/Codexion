@@ -28,9 +28,12 @@ typedef enum e_sched
 
 typedef enum e_coder_status
 {
+	CODER_INITIALIZING,
+	CODER_REQUESTING,
 	CODER_COMPILE,
 	CODER_DEBUG,
 	CODER_REFACTOR,
+	CODER_BURNED_OUT,
 }						t_coder_status;
 
 typedef struct s_node
@@ -105,5 +108,10 @@ t_node					pop_heap(t_heap *heap);
 int						get_left_child(int i);
 int						get_right_child(int i);
 int						get_parent(int i);
+
+int						init_coders(t_data *data);
+void					*coder_routine(void *arg);
+int						start_coders(t_data *data);
+int						join_coders(t_data *data);
 
 #endif

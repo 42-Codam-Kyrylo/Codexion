@@ -14,7 +14,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	print_data(t_data *data);
+void		print_data(t_data *data);
+
+static int	cleanup_data(t_data *data)
+{
+	free(data->coders);
+	free(data);
+	return (1);
+}
+
+static int	launch_coders(t_data *data)
+{
+	if (init_coders(data) != 0)
+		printf("Error: init_coders failed\n");
+	else if (start_coders(data) != 0)
+		printf("Error: start_coders failed\n");
+	else if (join_coders(data) != 0)
+		printf("Error: join_coders failed\n");
+	else
+		return (0);
+	return (1);
+}
 
 int	main(int argc, char *argv[])
 {
@@ -23,18 +43,16 @@ int	main(int argc, char *argv[])
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
+	*data = (t_data){0};
 	if (parse(data, argc, argv) != 0)
 	{
 		free(data);
 		return (1);
 	}
-
-	
-
-
-	
-	// work
 	print_data(data);
+	if (launch_coders(data) != 0)
+		return (cleanup_data(data));
+	free(data->coders);
 	free(data);
 	return (0);
 }
