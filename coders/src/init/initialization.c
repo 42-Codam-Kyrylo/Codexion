@@ -58,8 +58,8 @@ int	start_coders(t_data *data)
 
 int	join_coders(t_data *data)
 {
-	int	i;
-	int	status;
+	int i;
+	int status;
 
 	i = 0;
 	while (i < data->number_of_coders)
@@ -73,10 +73,4 @@ int	join_coders(t_data *data)
 		i++;
 	}
 	return (0);
-}
-
-void	init_mutexes(t_data *data)
-{
-	pthread_mutex_init(&data->stop_mutex, NULL);
-	pthread_mutex_init(&data->print_mutex, NULL);
 }

@@ -4,9 +4,9 @@
 /*   helpers.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
+/*                                                   +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 20:16:36 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/03/26 16:13:53 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/03/26 16:13:53 by kvolynsk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ long long	ft_atoll(const char *str)
 // returns current time in ms = (seconds *1000) + (microseconds / 1000)
 long long	get_current_time(void)
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (0);
