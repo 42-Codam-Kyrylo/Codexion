@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "coders.h"
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,6 +35,12 @@ static int	parse_numeric_arguments(t_data *data, char *argv[])
 		return (1);
 	if (parse_long_long(argv[7], &data->dongle_cooldown) != 0)
 		return (1);
+	if (data->time_to_burnout <= 0 || data->time_to_compile <= 0
+		|| data->time_to_debug <= 0 || data->time_to_refactor <= 0)
+	{
+		printf("ERROR: enter positive value!\n");
+		return (1);
+	}
 	return (0);
 }
 
@@ -69,9 +76,9 @@ int	parse_long_long(char *value, long long *out)
 		return (1);
 	}
 	time = ft_atoll(value);
-	if (time <= 0)
+	if (time < 0)
 	{
-		printf("ERROR: enter positive value!\n");
+		printf("ERROR: value out of range!\n");
 		return (1);
 	}
 	*out = time;
@@ -80,19 +87,24 @@ int	parse_long_long(char *value, long long *out)
 
 int	parse_int(char *value, int *out)
 {
-	int	num;
+	long long	num;
 
 	if (!ft_isdigitstr(value))
 	{
 		printf("ERROR: enter only digits!\n");
 		return (1);
 	}
-	num = atoi(value);
+	num = ft_atoll(value);
+	if (num < 0 || num > INT_MAX)
+	{
+		printf("ERROR: value out of range!\n");
+		return (1);
+	}
 	if (num <= 0)
 	{
 		printf("ERROR: enter positive value!\n");
 		return (1);
 	}
-	*out = num;
+	*out = (int)num;
 	return (0);
 }

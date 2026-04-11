@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "coders.h"
+#include <limits.h>
 #include <sys/time.h>
 
 int	ft_isdigit(int c)
@@ -39,11 +40,15 @@ int	ft_isdigitstr(char *s)
 long long	ft_atoll(const char *str)
 {
 	long long	res;
+	int			digit;
 
 	res = 0;
 	while (*str >= '0' && *str <= '9')
 	{
-		res = res * 10 + (*str - '0');
+		digit = *str - '0';
+		if (res > (LLONG_MAX - digit) / 10)
+			return (-1);
+		res = res * 10 + digit;
 		str++;
 	}
 	return (res);
