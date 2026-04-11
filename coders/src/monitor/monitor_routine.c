@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   monitor_routine.c                                  :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2026/04/11 17:30:00 by kvolynsk      #+#    #+#                 */
+/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "coders.h"
 #include <stdio.h>
 #include <unistd.h>
 
 static int	all_compiles_done(t_data *data);
 static int	find_burned_out_coder(t_data *data, int *burned_out_id);
+static void	handle_stop_event(t_data *data, int burned_out_id);
 
 void	*monitor_routine(void *arg)
 {
@@ -15,27 +28,32 @@ void	*monitor_routine(void *arg)
 	{
 		if (find_burned_out_coder(data, &burned_out_id))
 		{
-			stop_simulation(data);
-			wake_all_dongle_waiters(data);
-			pthread_mutex_lock(&data->print_mutex);
-			printf("%lld %d burned out\n", get_timestamp(data->start_time),
-				burned_out_id);
-			pthread_mutex_unlock(&data->print_mutex);
+			handle_stop_event(data, burned_out_id);
 			return (NULL);
 		}
 		if (all_compiles_done(data))
 		{
-			stop_simulation(data);
-			wake_all_dongle_waiters(data);
-			pthread_mutex_lock(&data->print_mutex);
-			printf("DONE"); // TODO DELETE
-			pthread_mutex_unlock(&data->print_mutex);
+			handle_stop_event(data, 0);
 			return (NULL);
 		}
 		usleep(1000);
 	}
 	return (NULL);
 }
+
+static void	handle_stop_event(t_data *data, int burned_out_id)
+{
+	stop_simulation(data);
+	wake_all_dongle_waiters(data);
+	pthread_mutex_lock(&data->print_mutex);
+	if (burned_out_id)
+		printf("%lld %d burned out\n", get_timestamp(data->start_time),
+			burned_out_id);
+	else
+		printf("DONE");
+	pthread_mutex_unlock(&data->print_mutex);
+}
+
 static int	all_compiles_done(t_data *data)
 {
 	int	i;
@@ -82,18 +100,4 @@ void	stop_simulation(t_data *data)
 	pthread_mutex_lock(&data->stop_mutex);
 	data->is_simulation_end = 1;
 	pthread_mutex_unlock(&data->stop_mutex);
-}
-
-void	wake_all_dongle_waiters(t_data *data)
-{
-	int i;
-
-	i = 0;
-	while (i < data->number_of_coders)
-	{
-		pthread_mutex_lock(&data->dongles[i].mutex);
-		pthread_cond_broadcast(&data->dongles[i].cond);
-		pthread_mutex_unlock(&data->dongles[i].mutex);
-		i++;
-	}
 }

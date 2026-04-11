@@ -4,10 +4,9 @@
 /*   launch_routines.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
-/*                                                   +#+#+#+#+#+
-	+#+           */
-/*   Created: 2026/04/11 by kvolynsk  #+#    #+#                  */
-/*   Updated: 2026/04/11 by kvolynsk        ########   odam.nl         */
+/*                                                   +#+                      */
+/*   Created: 2026/04/11 17:30:00 by kvolynsk      #+#    #+#                 */
+/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

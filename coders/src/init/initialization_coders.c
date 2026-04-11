@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   initialization_coders.c                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2026/04/11 17:30:00 by kvolynsk      #+#    #+#                 */
+/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "coders.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,7 +34,8 @@ void	cleanup_coders_range(t_data *data, int count, int destroy_mutexes)
 
 int	init_coders(t_data *data)
 {
-	int	i;
+	int		i;
+	t_coder	*coder;
 
 	data->coders = malloc(sizeof(t_coder) * data->number_of_coders);
 	if (!data->coders)
@@ -30,14 +43,12 @@ int	init_coders(t_data *data)
 	i = 0;
 	while (i < data->number_of_coders)
 	{
-		t_coder coder = {
-			.id = i + 1,
-			.status = CODER_INITIALIZING,
-			.data = data,
-			.last_compiling_at = data->start_time,
-			.compiles_done = 0,
-		};
-		data->coders[i] = coder;
+		coder = &data->coders[i];
+		coder->id = i + 1;
+		coder->status = CODER_INITIALIZING;
+		coder->data = data;
+		coder->last_compiling_at = data->start_time;
+		coder->compiles_done = 0;
 		i++;
 	}
 	return (0);

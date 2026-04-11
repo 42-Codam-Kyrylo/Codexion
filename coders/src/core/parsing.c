@@ -4,10 +4,9 @@
 /*   parsing.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
-/*                                                   +#+#+#+#+#+  
-	+#+           */
+/*                                                   +#+                      */
 /*   Created: 2026/03/24 20:16:32 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/03/24 20:16:33 by kvolynsk         ########   odam.nl         */
+/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +80,7 @@ int	parse_long_long(char *value, long long *out)
 
 int	parse_int(char *value, int *out)
 {
-	int num;
+	int	num;
 
 	if (!ft_isdigitstr(value))
 	{

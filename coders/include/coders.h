@@ -6,7 +6,7 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/03/24 20:16:39 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/03/31 21:02:25 by kvolynsk       ########   odam.nl         */
+/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef enum e_coder_status
 typedef struct s_node
 {
 	int					coder_id;
-	long long priority; // for edf - deadline time, for FIFO - request time
+	long long			priority;
 }						t_node;
 
 typedef struct s_heap
@@ -147,8 +147,8 @@ int						init_dongle_conds(t_data *data);
 void					update_compiling_at(t_coder *coder);
 void					get_dongle_lock_order(t_coder *coder, int *first,
 							int *second);
-void				prepare_dongle_wait_time(t_dongle *dongle, t_data *data,
-								struct timespec *ts);
+void					prepare_dongle_wait_time(t_dongle *dongle, t_data *data,
+							struct timespec *ts);
 void					coder_compile(t_coder *coder);
 long long				get_node_priority(t_coder *coder);
 void					*monitor_routine(void *arg);

@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   coder_actions.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2026/04/11 17:30:00 by kvolynsk      #+#    #+#                 */
+/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "coders.h"
-#include <stdio.h>
 
 static void	take_dongle(t_coder *coder, int idx);
 static void	release_dongle(t_coder *coder, int idx);
-static int	is_my_turn(t_dongle *dongle, t_coder *coder);
+static int	wait_for_dongle(t_dongle *dongle, t_coder *coder);
 static int	can_take_dongle(t_dongle *dongle, t_coder *coder);
 
 /**
@@ -40,25 +51,38 @@ void	coder_compile(t_coder *coder)
  */
 static void	take_dongle(t_coder *coder, int idx)
 {
-	t_dongle		*dongle;
-	struct timespec	ts;
+	t_dongle	*dongle;
+	t_node		node;
 
 	dongle = &coder->data->dongles[idx];
+	node.coder_id = coder->id;
+	node.priority = get_node_priority(coder);
 	pthread_mutex_lock(&dongle->mutex);
-	t_node node = {
-		.coder_id = coder->id,
-		.priority = get_node_priority(coder),
-	};
 	insert_heap(dongle->queue, node);
+	if (wait_for_dongle(dongle, coder))
+	{
+		pthread_mutex_unlock(&dongle->mutex);
+		return ;
+	}
+	pop_heap(dongle->queue);
+	dongle->status = DONGLE_OCCUPIED;
+	print_status(coder, "has taken a dongle");
+	pthread_mutex_unlock(&dongle->mutex);
+}
+
+static int	wait_for_dongle(t_dongle *dongle, t_coder *coder)
+{
+	struct timespec	ts;
+
 	while (!can_take_dongle(dongle, coder))
 	{
 		if (get_is_simulation_end(coder->data))
 		{
 			pop_node_by_id(dongle->queue, coder->id);
-			pthread_mutex_unlock(&dongle->mutex);
-			return ;
+			return (1);
 		}
-		if (dongle->status == DONGLE_FREE && is_my_turn(dongle, coder))
+		if (dongle->status == DONGLE_FREE
+			&& dongle->queue->array[0].coder_id == coder->id)
 		{
 			prepare_dongle_wait_time(dongle, coder->data, &ts);
 			pthread_cond_timedwait(&dongle->cond, &dongle->mutex, &ts);
@@ -66,10 +90,7 @@ static void	take_dongle(t_coder *coder, int idx)
 		else
 			pthread_cond_wait(&dongle->cond, &dongle->mutex);
 	}
-	pop_heap(dongle->queue);
-	dongle->status = DONGLE_OCCUPIED;
-	print_status(coder, "has taken a dongle");
-	pthread_mutex_unlock(&dongle->mutex);
+	return (0);
 }
 
 /**
@@ -92,10 +113,6 @@ static void	release_dongle(t_coder *coder, int idx)
 	pthread_cond_broadcast(&dongle->cond);
 	pthread_mutex_unlock(&dongle->mutex);
 }
-static int	is_my_turn(t_dongle *dongle, t_coder *coder)
-{
-	return (dongle->queue->array[0].coder_id == coder->id);
-}
 
 /**
  * @brief Checks whether the coder may acquire this dongle now.
@@ -112,5 +129,6 @@ static int	can_take_dongle(t_dongle *dongle, t_coder *coder)
 
 	elapsed = get_current_time() - dongle->last_released_at;
 	return (dongle->status == DONGLE_FREE
-		&& elapsed > coder->data->dongle_cooldown && is_my_turn(dongle, coder));
+		&& elapsed > coder->data->dongle_cooldown
+		&& dongle->queue->array[0].coder_id == coder->id);
 }
