@@ -1,7 +1,9 @@
 #include "coders.h"
+#include <stdio.h>
 
 static void	take_dongle(t_coder *coder, int idx);
 static void	release_dongle(t_coder *coder, int idx);
+static int	is_my_turn(t_dongle *dongle, t_coder *coder);
 static int	can_take_dongle(t_dongle *dongle, t_coder *coder);
 
 /**
@@ -38,7 +40,10 @@ void	coder_compile(t_coder *coder)
  */
 static void	take_dongle(t_coder *coder, int idx)
 {
-	t_dongle	*dongle;
+	t_dongle		*dongle;
+	long long		release_time;
+	long long		wait_until_ms;
+	struct timespec	ts;
 
 	dongle = &coder->data->dongles[idx];
 	pthread_mutex_lock(&dongle->mutex);
@@ -55,7 +60,16 @@ static void	take_dongle(t_coder *coder, int idx)
 			pthread_mutex_unlock(&dongle->mutex);
 			return ;
 		}
-		pthread_cond_wait(&dongle->cond, &dongle->mutex);
+		if (dongle->status == DONGLE_FREE && is_my_turn(dongle, coder))
+		{
+			release_time = dongle->last_released_at;
+			wait_until_ms = release_time + coder->data->dongle_cooldown + 1;
+			ts.tv_sec = wait_until_ms / 1000;
+			ts.tv_nsec = (wait_until_ms % 1000) * 1000000;
+			pthread_cond_timedwait(&dongle->cond, &dongle->mutex, &ts);
+		}
+		else
+			pthread_cond_wait(&dongle->cond, &dongle->mutex);
 	}
 	pop_heap(dongle->queue);
 	dongle->status = DONGLE_OCCUPIED;
@@ -83,6 +97,10 @@ static void	release_dongle(t_coder *coder, int idx)
 	pthread_cond_broadcast(&dongle->cond);
 	pthread_mutex_unlock(&dongle->mutex);
 }
+static int	is_my_turn(t_dongle *dongle, t_coder *coder)
+{
+	return (dongle->queue->array[0].coder_id == coder->id);
+}
 
 /**
  * @brief Checks whether the coder may acquire this dongle now.
@@ -95,10 +113,9 @@ static void	release_dongle(t_coder *coder, int idx)
  */
 static int	can_take_dongle(t_dongle *dongle, t_coder *coder)
 {
-	long elapsed;
+	long	elapsed;
 
 	elapsed = get_current_time() - dongle->last_released_at;
 	return (dongle->status == DONGLE_FREE
-		&& elapsed > coder->data->dongle_cooldown
-		&& dongle->queue->array[0].coder_id == coder->id);
+		&& elapsed > coder->data->dongle_cooldown && is_my_turn(dongle, coder));
 }

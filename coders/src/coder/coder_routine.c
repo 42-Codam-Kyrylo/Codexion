@@ -21,6 +21,7 @@ void	*coder_routine(void *arg)
 	while (!get_is_simulation_end(coder->data))
 	{
 		coder_compile(coder);
+		increment_compiles_done(coder);
 		if (get_is_simulation_end(coder->data))
 			return (NULL);
 		print_status(coder, "is debugging");
@@ -29,7 +30,6 @@ void	*coder_routine(void *arg)
 			return (NULL);
 		print_status(coder, "is refactoring");
 		ft_sleep(coder->data->time_to_refactor);
-		coder->compiles_done++;
 	}
 	return (NULL);
 }

@@ -154,5 +154,6 @@ int						start_monitor(t_data *data);
 int						launch_simulation(t_data *data);
 void					stop_simulation(t_data *data);
 void					wake_all_dongle_waiters(t_data *data);
+void					increment_compiles_done(t_coder *coder);
 
 #endif

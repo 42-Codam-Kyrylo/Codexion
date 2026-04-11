@@ -38,6 +38,13 @@ void	print_status(t_coder *coder, const char *msg)
 			coder->id, msg);
 	pthread_mutex_unlock(&coder->data->print_mutex);
 }
+
+void	increment_compiles_done(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->mutex);
+	coder->compiles_done++;
+	pthread_mutex_unlock(&coder->mutex);
+}
 /**
  * @brief Computes a deterministic dongle lock order for one coder.
  *
