@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void	cleanup_coders_range(t_data *data, int count, int mutex_count)
+void	cleanup_coders_range(t_data *data, int count, int destroy_mutexes)
 {
 	int	i;
 
@@ -12,7 +12,7 @@ void	cleanup_coders_range(t_data *data, int count, int mutex_count)
 	i = 0;
 	while (i < count)
 	{
-		if (i < mutex_count)
+		if (destroy_mutexes)
 			pthread_mutex_destroy(&data->coders[i].mutex);
 		i++;
 	}
@@ -54,7 +54,7 @@ int	init_coder_mutexes(t_data *data)
 		status = pthread_mutex_init(&data->coders[i].mutex, NULL);
 		if (status != 0)
 		{
-			cleanup_coders_range(data, data->number_of_coders, i);
+			cleanup_coders_range(data, i, 1);
 			fprintf(stderr, "Error mutex init coder_mutex: %s\n",
 				strerror(status));
 			return (1);

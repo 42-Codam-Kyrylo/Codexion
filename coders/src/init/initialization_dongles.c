@@ -15,8 +15,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-void	cleanup_dongles_range(t_data *data, int count, int mutex_count,
-		int cond_count)
+void	cleanup_dongles_range(t_data *data, int count, int destroy_mutexes,
+		int destroy_conds)
 {
 	int	i;
 
@@ -25,9 +25,9 @@ void	cleanup_dongles_range(t_data *data, int count, int mutex_count,
 	i = 0;
 	while (i < count)
 	{
-		if (i < mutex_count)
+		if (destroy_mutexes)
 			pthread_mutex_destroy(&data->dongles[i].mutex);
-		if (i < cond_count)
+		if (destroy_conds)
 			pthread_cond_destroy(&data->dongles[i].cond);
 		free(data->dongles[i].queue->array);
 		free(data->dongles[i].queue);
@@ -75,7 +75,7 @@ int	init_dongle_mutexes(t_data *data)
 		status = pthread_mutex_init(&data->dongles[i].mutex, NULL);
 		if (status != 0)
 		{
-			cleanup_dongles_range(data, data->number_of_coders, i, 0);
+			cleanup_dongles_range(data, i, 1, 0);
 			fprintf(stderr, "Error mutex init dongle_mutex: %s\n",
 				strerror(status));
 			return (1);
@@ -96,8 +96,7 @@ int	init_dongle_conds(t_data *data)
 		status = pthread_cond_init(&data->dongles[i].cond, NULL);
 		if (status != 0)
 		{
-			cleanup_dongles_range(data, data->number_of_coders,
-				data->number_of_coders, i);
+			cleanup_dongles_range(data, i, 1, 1);
 			fprintf(stderr, "Error cond init dongle_cond: %s\n",
 				strerror(status));
 			return (1);

@@ -28,11 +28,11 @@ static int	cleanup_data(t_data *data, int cleanup_state)
 {
 	if (cleanup_state & CLEANUP_DONGLES)
 		cleanup_dongles_range(data, data->number_of_coders,
-			(cleanup_state & CLEANUP_DONGLE_MUTEXES) * data->number_of_coders,
-			(cleanup_state & CLEANUP_DONGLE_CONDS) * data->number_of_coders);
+			cleanup_state & CLEANUP_DONGLE_MUTEXES,
+			cleanup_state & CLEANUP_DONGLE_CONDS);
 	if (cleanup_state & CLEANUP_CODERS)
 		cleanup_coders_range(data, data->number_of_coders,
-			(cleanup_state & CLEANUP_CODER_MUTEXES) * data->number_of_coders);
+			cleanup_state & CLEANUP_CODER_MUTEXES);
 	if (cleanup_state & CLEANUP_CORE_MUTEXES)
 	{
 		pthread_mutex_destroy(&data->stop_mutex);
