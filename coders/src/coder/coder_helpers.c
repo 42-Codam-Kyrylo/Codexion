@@ -23,6 +23,13 @@ int	get_is_simulation_end(t_data *data)
 	return (is_end);
 }
 
+void	update_compiling_at(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->mutex);
+	coder->last_compiling_at = get_current_time();
+	pthread_mutex_unlock(&coder->mutex);
+}
+
 void	print_status(t_coder *coder, const char *msg)
 {
 	pthread_mutex_lock(&coder->data->print_mutex);

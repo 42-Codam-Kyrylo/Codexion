@@ -20,6 +20,7 @@ void	*coder_routine(void *arg)
 	coder = (t_coder *)arg;
 	while (!get_is_simulation_end(coder->data))
 	{
+		update_compiling_at(coder);
 		print_status(coder, "is compiling");
 		ft_sleep(coder->data->time_to_compile);
 		if (get_is_simulation_end(coder->data))

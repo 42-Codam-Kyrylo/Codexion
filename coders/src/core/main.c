@@ -18,6 +18,9 @@
 #define CLEANUP_CORE_MUTEXES 1
 #define CLEANUP_DONGLES 2
 #define CLEANUP_DONGLE_MUTEXES 4
+#define CLEANUP_DONGLE_CONDS 8
+#define CLEANUP_CODERS 16
+#define CLEANUP_CODER_MUTEXES 32
 
 void		print_data(t_data *data);
 
@@ -25,13 +28,16 @@ static int	cleanup_data(t_data *data, int cleanup_state)
 {
 	if (cleanup_state & CLEANUP_DONGLES)
 		cleanup_dongles_range(data, data->number_of_coders,
-			cleanup_state & CLEANUP_DONGLE_MUTEXES);
+			(cleanup_state & CLEANUP_DONGLE_MUTEXES) * data->number_of_coders,
+			(cleanup_state & CLEANUP_DONGLE_CONDS) * data->number_of_coders);
+	if (cleanup_state & CLEANUP_CODERS)
+		cleanup_coders_range(data, data->number_of_coders,
+			(cleanup_state & CLEANUP_CODER_MUTEXES) * data->number_of_coders);
 	if (cleanup_state & CLEANUP_CORE_MUTEXES)
 	{
 		pthread_mutex_destroy(&data->stop_mutex);
 		pthread_mutex_destroy(&data->print_mutex);
 	}
-	free(data->coders);
 	free(data);
 	return (1);
 }
@@ -48,16 +54,23 @@ static int	init_resources(t_data *data, int *cleanup_state)
 	if (init_dongle_mutexes(data) != 0)
 		return (1);
 	*cleanup_state |= CLEANUP_DONGLE_MUTEXES;
+	if (init_dongle_conds(data) != 0)
+		return (1);
+	*cleanup_state |= CLEANUP_DONGLE_CONDS;
+	if (init_start_time(data) != 0)
+		return (1);
+	if (init_coders(data) != 0)
+		return (1);
+	*cleanup_state |= CLEANUP_CODERS;
+	if (init_coder_mutexes(data) != 0)
+		return (1);
+	*cleanup_state |= CLEANUP_CODER_MUTEXES;
 	return (0);
 }
 
 static int	launch_coders(t_data *data)
 {
-	if (init_start_time(data) != 0)
-		printf("Error: init_start_time failed\n");
-	else if (init_coders(data) != 0)
-		printf("Error: init_coders failed\n");
-	else if (start_coders(data) != 0)
+	if (start_coders(data) != 0)
 		printf("Error: start_coders failed\n");
 	else if (join_coders(data) != 0)
 		printf("Error: join_coders failed\n");

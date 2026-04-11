@@ -3,6 +3,23 @@
 #include <stdlib.h>
 #include <string.h>
 
+void	cleanup_coders_range(t_data *data, int count, int mutex_count)
+{
+	int	i;
+
+	if (!data || !data->coders)
+		return ;
+	i = 0;
+	while (i < count)
+	{
+		if (i < mutex_count)
+			pthread_mutex_destroy(&data->coders[i].mutex);
+		i++;
+	}
+	free(data->coders);
+	data->coders = NULL;
+}
+
 int	init_coders(t_data *data)
 {
 	int	i;
@@ -17,9 +34,31 @@ int	init_coders(t_data *data)
 			.id = i + 1,
 			.status = CODER_INITIALIZING,
 			.data = data,
+			.last_compiling_at = data->start_time,
 			.compiles_done = 0,
 		};
 		data->coders[i] = coder;
+		i++;
+	}
+	return (0);
+}
+
+int	init_coder_mutexes(t_data *data)
+{
+	int	status;
+	int	i;
+
+	i = 0;
+	while (i < data->number_of_coders)
+	{
+		status = pthread_mutex_init(&data->coders[i].mutex, NULL);
+		if (status != 0)
+		{
+			cleanup_coders_range(data, data->number_of_coders, i);
+			fprintf(stderr, "Error mutex init coder_mutex: %s\n",
+				strerror(status));
+			return (1);
+		}
 		i++;
 	}
 	return (0);

@@ -56,6 +56,7 @@ typedef struct s_coder
 	t_coder_status		status;
 	t_data				*data;
 	long long			last_compiling_at;
+	pthread_mutex_t		mutex;
 	int					compiles_done;
 }						t_coder;
 
@@ -116,6 +117,9 @@ int						get_right_child(int i);
 int						get_parent(int i);
 
 int						init_coders(t_data *data);
+int						init_coder_mutexes(t_data *data);
+void					cleanup_coders_range(t_data *data, int count,
+							int mutex_count);
 void					*coder_routine(void *arg);
 int						start_coders(t_data *data);
 int						join_coders(t_data *data);
@@ -123,10 +127,12 @@ int						init_start_time(t_data *data);
 int						init_dongles(t_data *data);
 int						init_dongle_mutexes(t_data *data);
 void					cleanup_dongles_range(t_data *data, int count,
-							int destroy_mutexes);
+							int mutex_count, int cond_count);
 
 long long				get_timestamp(long long simulation_start_time);
 void					ft_sleep(long long time);
 int						init_data_mutexes(t_data *data);
+int						init_dongle_conds(t_data *data);
+void					update_compiling_at(t_coder *coder);
 
 #endif
