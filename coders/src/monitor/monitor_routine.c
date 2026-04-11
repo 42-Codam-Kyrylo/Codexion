@@ -50,7 +50,7 @@ static void	handle_stop_event(t_data *data, int burned_out_id)
 		printf("%lld %d burned out\n", get_timestamp(data->start_time),
 			burned_out_id);
 	else
-		printf("DONE");
+		printf("DONE"); // TODO delete
 	pthread_mutex_unlock(&data->print_mutex);
 }
 

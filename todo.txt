@@ -1,0 +1,3 @@
+- delete practice dir before submit
+- delete output done in monitor routine
+- delete printing data
