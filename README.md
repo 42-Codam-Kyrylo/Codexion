@@ -58,7 +58,7 @@ make re          # Full rebuild
 ### Running the Program
 
 ```bash
-./coders <number_of_coders> <time_to_burnout> <time_to_compile> <time_to_debug> \
+./codexion <number_of_coders> <time_to_burnout> <time_to_compile> <time_to_debug> \
          <time_to_refactor> <number_of_compiles_required> <dongle_cooldown> <scheduler>
 ```
 
@@ -82,7 +82,7 @@ All arguments are **mandatory** and must be non-negative integers:
 **Small test** (2 coders, lenient timing):
 
 ```bash
-./coders 2 3000 300 300 300 2 100 fifo
+./codexion 2 3000 300 300 300 2 100 fifo
 ```
 
 Expected: Both coders compile at least 2 times before burnout.
@@ -90,7 +90,7 @@ Expected: Both coders compile at least 2 times before burnout.
 **Normal run** (5 coders, moderate pressure):
 
 ```bash
-./coders 5 2500 400 300 400 3 150 edf
+./codexion 5 2500 400 300 400 3 150 edf
 ```
 
 Expected: All 5 coders compile 3 times each; simulation completes without burnout.
@@ -98,7 +98,7 @@ Expected: All 5 coders compile 3 times each; simulation completes without burnou
 **Stress test** (10 coders, tight deadline):
 
 ```bash
-./coders 10 1500 500 200 300 2 200 fifo
+./codexion 10 1500 500 200 300 2 200 fifo
 ```
 
 Expected: High contention; likely burnout due to tight deadline and resource scarcity.
@@ -470,38 +470,38 @@ coders/
 **Test 1: Basic compilation**
 
 ```bash
-./coders 2 3000 200 200 200 1 100 fifo
+./codexion 2 3000 200 200 200 1 100 fifo
 # Expected: Both coders compile once; no burnout.
 ```
 
 **Test 2: EDF fairness**
 
 ```bash
-./coders 5 2000 300 300 300 2 100 edf
+./codexion 5 2000 300 300 300 2 100 edf
 # Expected: All 5 coders compile 2 times before anyone burns out.
 ```
 
 **Test 3: Dongle cooldown**
 
 ```bash
-./coders 2 5000 500 500 500 1 1000 fifo
+./codexion 2 5000 500 500 500 1 1000 fifo
 # Expected: Gap of ~1000 ms between dongle release and next use.
 ```
 
 **Test 4: Burnout detection**
 
 ```bash
-./coders 3 500 1000 1000 1000 10 1 fifo
+./codexion 3 500 1000 1000 1000 10 1 fifo
 # Expected: One coder burns out before reaching 10 compiles (burnout deadline exceeded).
 ```
 
 **Test 5: Input validation**
 
 ```bash
-./coders -1 1000 200 200 200 1 100 fifo
+./codexion -1 1000 200 200 200 1 100 fifo
 # Expected: Error message and clean exit.
 
-./coders 5 1000 200 200 200 1 100 invalid
+./codexion 5 1000 200 200 200 1 100 invalid
 # Expected: Error message and clean exit.
 ```
 
@@ -510,7 +510,7 @@ coders/
 **Valgrind memcheck**:
 
 ```bash
-valgrind --leak-check=full --show-leak-kinds=all ./coders 2 2000 200 200 200 1 100 fifo
+valgrind --leak-check=full --show-leak-kinds=all ./codexion 2 2000 200 200 200 1 100 fifo
 ```
 
 **Expected**: No "definitely lost," "indirectly lost," or "possibly lost" memory. All allocated memory freed.
@@ -520,7 +520,7 @@ valgrind --leak-check=full --show-leak-kinds=all ./coders 2 2000 200 200 200 1 1
 **Valgrind helgrind** (detects race conditions):
 
 ```bash
-valgrind --tool=helgrind ./coders 3 2000 300 300 300 1 100 edf
+valgrind --tool=helgrind ./codexion 3 2000 300 300 300 1 100 edf
 ```
 
 **Expected**: No race condition warnings. All shared memory accesses are protected by locks.
