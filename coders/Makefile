@@ -30,7 +30,8 @@ SRC = \
 	$(SRC_DIR)/init/initialization_common.c \
 	$(SRC_DIR)/init/initialization_dongles.c \
 	$(SRC_DIR)/coder/coder_helpers.c \
-	$(SRC_DIR)/coder/coder_routine.c
+	$(SRC_DIR)/coder/coder_routine.c \
+	$(SRC_DIR)/coder/coder_actions.c \
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:.o=.d)

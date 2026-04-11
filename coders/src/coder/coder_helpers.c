@@ -38,3 +38,32 @@ void	print_status(t_coder *coder, const char *msg)
 			coder->id, msg);
 	pthread_mutex_unlock(&coder->data->print_mutex);
 }
+/**
+ * @brief Computes a deterministic dongle lock order for one coder.
+ *
+ * Gets the coder's two dongle indices and stores them in ascending order
+ * so all threads lock dongles consistently and avoid deadlocks.
+ *
+ * @param coder Current coder.
+ * @param first Output: lower dongle index to lock first.
+ * @param second Output: higher dongle index to lock second.
+ */
+void	get_dongle_lock_order(t_coder *coder, int *first, int *second)
+{
+	int	leftDongleIdx;
+	int	rightDongleIdx;
+
+	leftDongleIdx = coder->id - 1;
+	rightDongleIdx = (leftDongleIdx - 1 + coder->data->number_of_coders)
+		% coder->data->number_of_coders;
+	if (leftDongleIdx < rightDongleIdx)
+	{
+		*first = leftDongleIdx;
+		*second = rightDongleIdx;
+	}
+	else
+	{
+		*first = rightDongleIdx;
+		*second = leftDongleIdx;
+	}
+}

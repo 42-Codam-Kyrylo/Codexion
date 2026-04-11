@@ -134,5 +134,8 @@ void					ft_sleep(long long time);
 int						init_data_mutexes(t_data *data);
 int						init_dongle_conds(t_data *data);
 void					update_compiling_at(t_coder *coder);
+void					get_dongle_lock_order(t_coder *coder, int *first,
+							int *second);
+void					coder_compile(t_coder *coder);
 
 #endif
