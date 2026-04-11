@@ -60,7 +60,7 @@ fclean: clean
 re: fclean all
 
 run: $(NAME)
-	./$(NAME) 5 1000 100 100 100 5 50 fifo
+	./$(NAME) 5 500 100 100 100 5 50 fifo
 
 .PHONY: all clean fclean re run
 

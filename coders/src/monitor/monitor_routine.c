@@ -27,6 +27,9 @@ void	*monitor_routine(void *arg)
 		{
 			stop_simulation(data);
 			wake_all_dongle_waiters(data);
+			pthread_mutex_lock(&data->print_mutex);
+			printf("DONE"); // TODO DELETE
+			pthread_mutex_unlock(&data->print_mutex);
 			return (NULL);
 		}
 		usleep(1000);
