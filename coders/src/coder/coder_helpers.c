@@ -45,6 +45,7 @@ void	increment_compiles_done(t_coder *coder)
 	coder->compiles_done++;
 	pthread_mutex_unlock(&coder->mutex);
 }
+
 /**
  * @brief Computes a deterministic dongle lock order for one coder.
  *
@@ -57,20 +58,20 @@ void	increment_compiles_done(t_coder *coder)
  */
 void	get_dongle_lock_order(t_coder *coder, int *first, int *second)
 {
-	int	leftDongleIdx;
-	int	rightDongleIdx;
+	int	left_dongle_idx;
+	int	right_dongle_idx;
 
-	leftDongleIdx = coder->id - 1;
-	rightDongleIdx = (leftDongleIdx - 1 + coder->data->number_of_coders)
+	left_dongle_idx = coder->id - 1;
+	right_dongle_idx = (left_dongle_idx - 1 + coder->data->number_of_coders)
 		% coder->data->number_of_coders;
-	if (leftDongleIdx < rightDongleIdx)
+	if (left_dongle_idx < right_dongle_idx)
 	{
-		*first = leftDongleIdx;
-		*second = rightDongleIdx;
+		*first = left_dongle_idx;
+		*second = right_dongle_idx;
 	}
 	else
 	{
-		*first = rightDongleIdx;
-		*second = leftDongleIdx;
+		*first = right_dongle_idx;
+		*second = left_dongle_idx;
 	}
 }

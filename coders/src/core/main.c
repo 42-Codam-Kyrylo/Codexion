@@ -4,10 +4,9 @@
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
-/*                                                   +#+#+#+#+#+
-	+#+           */
+/*                                                   +#+                      */
 /*   Created: 2026/03/20 14:14:25 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/04/07 22:18:11 by kvolynsk        ########   odam.nl         */
+/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +64,7 @@ static int	init_resources(t_data *data, int *cleanup_state)
 	*cleanup_state |= CLEANUP_CODER_MUTEXES;
 	return (0);
 }
+
 static int	cleanup_data(t_data *data, int cleanup_state)
 {
 	if (cleanup_state & CLEANUP_DONGLES)
@@ -85,7 +85,7 @@ static int	cleanup_data(t_data *data, int cleanup_state)
 
 void	print_data(t_data *data)
 {
-	const char *scheduler;
+	const char	*scheduler;
 
 	if (!data)
 		return ;

@@ -27,6 +27,7 @@ SRC = \
 	$(SRC_DIR)/core/launch_routines.c \
 	$(SRC_DIR)/heap/heap.c \
 	$(SRC_DIR)/heap/heap_helpers.c \
+	$(SRC_DIR)/heap/heap_priority.c \
 	$(SRC_DIR)/init/initialization_coders.c \
 	$(SRC_DIR)/init/initialization_common.c \
 	$(SRC_DIR)/init/initialization_dongles.c \
@@ -61,7 +62,7 @@ fclean: clean
 re: fclean all
 
 run: $(NAME)
-	./$(NAME) 5 500 100 100 100 5 50 fifo
+	./$(NAME) 5 500 100 100 100 5 50 edf
 
 .PHONY: all clean fclean re run
 

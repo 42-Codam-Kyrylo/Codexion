@@ -39,7 +39,8 @@ void	cleanup_dongles_range(t_data *data, int count, int destroy_mutexes,
 
 int	init_dongles(t_data *data)
 {
-	int	i;
+	int			i;
+	t_dongle	*dongle;
 
 	data->dongles = malloc(sizeof(t_dongle) * data->number_of_coders);
 	if (!data->dongles)
@@ -47,18 +48,16 @@ int	init_dongles(t_data *data)
 	i = 0;
 	while (i < data->number_of_coders)
 	{
-		t_dongle dongle = {
-			.id = i + 1,
-			.status = DONGLE_FREE,
-			.last_released_at = 0,
-			.queue = create_heap(2),
-		};
-		if (!dongle.queue)
+		dongle = &data->dongles[i];
+		dongle->id = i + 1;
+		dongle->status = DONGLE_FREE;
+		dongle->last_released_at = 0;
+		dongle->queue = create_heap(2);
+		if (!dongle->queue)
 		{
 			cleanup_dongles_range(data, i, 0, 0);
 			return (1);
 		}
-		data->dongles[i] = dongle;
 		i++;
 	}
 	return (0);

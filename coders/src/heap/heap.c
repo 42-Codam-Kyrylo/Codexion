@@ -4,10 +4,9 @@
 /*   heap.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
-/*                                                   +#+#+#+#+#+
-	+#+           */
+/*                                                   +#+                      */
 /*   Created: 2026/03/31 19:20:07 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/03/31 22:10:04 by kvolynsk        ########   odam.nl         */
+/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +116,7 @@ void	heapify(t_heap *heap, int i)
  */
 t_node	pop_heap(t_heap *heap)
 {
-	t_node head;
+	t_node	head;
 
 	if (heap->size <= 0)
 		return ((t_node){0, -1});
