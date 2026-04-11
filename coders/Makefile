@@ -24,14 +24,17 @@ SRC = \
 	$(SRC_DIR)/core/main.c \
 	$(SRC_DIR)/core/helpers.c \
 	$(SRC_DIR)/core/parsing.c \
+	$(SRC_DIR)/core/launch_routines.c \
 	$(SRC_DIR)/heap/heap.c \
 	$(SRC_DIR)/heap/heap_helpers.c \
 	$(SRC_DIR)/init/initialization_coders.c \
 	$(SRC_DIR)/init/initialization_common.c \
 	$(SRC_DIR)/init/initialization_dongles.c \
+	$(SRC_DIR)/init/initialization_monitor.c \
 	$(SRC_DIR)/coder/coder_helpers.c \
 	$(SRC_DIR)/coder/coder_routine.c \
 	$(SRC_DIR)/coder/coder_actions.c \
+	$(SRC_DIR)/monitor/monitor_routine.c \
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:.o=.d)

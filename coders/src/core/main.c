@@ -15,23 +15,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define CLEANUP_CORE_MUTEXES 1
-#define CLEANUP_DONGLES 2
-#define CLEANUP_DONGLE_MUTEXES 4
-#define CLEANUP_DONGLE_CONDS 8
-#define CLEANUP_CODERS 16
-#define CLEANUP_CODER_MUTEXES 32
-
 void		print_data(t_data *data);
 static int	cleanup_data(t_data *data, int cleanup_state);
 static int	init_resources(t_data *data, int *cleanup_state);
-static int	launch_coders(t_data *data);
+int			launch_simulation(t_data *data);
 
 int	main(int argc, char *argv[])
 {
 	t_data	*data;
 	int		cleanup_state;
-	int		status;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -42,8 +34,7 @@ int	main(int argc, char *argv[])
 	if (init_resources(data, &cleanup_state) != 0)
 		return (cleanup_data(data, cleanup_state));
 	print_data(data);
-	status = launch_coders(data);
-	if (status != 0)
+	if (launch_simulation(data) != 0)
 		return (cleanup_data(data, cleanup_state));
 	cleanup_data(data, cleanup_state);
 	return (0);
@@ -89,17 +80,6 @@ static int	cleanup_data(t_data *data, int cleanup_state)
 		pthread_mutex_destroy(&data->print_mutex);
 	}
 	free(data);
-	return (1);
-}
-
-static int	launch_coders(t_data *data)
-{
-	if (start_coders(data) != 0)
-		printf("Error: start_coders failed\n");
-	else if (join_coders(data) != 0)
-		printf("Error: join_coders failed\n");
-	else
-		return (0);
 	return (1);
 }
 

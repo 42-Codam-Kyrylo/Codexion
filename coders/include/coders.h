@@ -18,6 +18,13 @@
 
 # include <pthread.h>
 
+# define CLEANUP_CORE_MUTEXES 1
+# define CLEANUP_DONGLES 2
+# define CLEANUP_DONGLE_MUTEXES 4
+# define CLEANUP_DONGLE_CONDS 8
+# define CLEANUP_CODERS 16
+# define CLEANUP_CODER_MUTEXES 32
+
 typedef struct s_data	t_data;
 
 typedef enum e_sched
@@ -142,5 +149,10 @@ void					get_dongle_lock_order(t_coder *coder, int *first,
 							int *second);
 void					coder_compile(t_coder *coder);
 long long				get_node_priority(t_coder *coder);
+void					*monitor_routine(void *arg);
+int						start_monitor(t_data *data);
+int						launch_simulation(t_data *data);
+void					stop_simulation(t_data *data);
+void					wake_all_dongle_waiters(t_data *data);
 
 #endif
