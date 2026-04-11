@@ -23,23 +23,30 @@
 #define CLEANUP_CODER_MUTEXES 32
 
 void		print_data(t_data *data);
+static int	cleanup_data(t_data *data, int cleanup_state);
+static int	init_resources(t_data *data, int *cleanup_state);
+static int	launch_coders(t_data *data);
 
-static int	cleanup_data(t_data *data, int cleanup_state)
+int	main(int argc, char *argv[])
 {
-	if (cleanup_state & CLEANUP_DONGLES)
-		cleanup_dongles_range(data, data->number_of_coders,
-			cleanup_state & CLEANUP_DONGLE_MUTEXES,
-			cleanup_state & CLEANUP_DONGLE_CONDS);
-	if (cleanup_state & CLEANUP_CODERS)
-		cleanup_coders_range(data, data->number_of_coders,
-			cleanup_state & CLEANUP_CODER_MUTEXES);
-	if (cleanup_state & CLEANUP_CORE_MUTEXES)
-	{
-		pthread_mutex_destroy(&data->stop_mutex);
-		pthread_mutex_destroy(&data->print_mutex);
-	}
-	free(data);
-	return (1);
+	t_data	*data;
+	int		cleanup_state;
+	int		status;
+
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (1);
+	*data = (t_data){0};
+	if (parse(data, argc, argv) != 0)
+		return (free(data), 1);
+	if (init_resources(data, &cleanup_state) != 0)
+		return (cleanup_data(data, cleanup_state));
+	print_data(data);
+	status = launch_coders(data);
+	if (status != 0)
+		return (cleanup_data(data, cleanup_state));
+	cleanup_data(data, cleanup_state);
+	return (0);
 }
 
 static int	init_resources(t_data *data, int *cleanup_state)
@@ -67,6 +74,23 @@ static int	init_resources(t_data *data, int *cleanup_state)
 	*cleanup_state |= CLEANUP_CODER_MUTEXES;
 	return (0);
 }
+static int	cleanup_data(t_data *data, int cleanup_state)
+{
+	if (cleanup_state & CLEANUP_DONGLES)
+		cleanup_dongles_range(data, data->number_of_coders,
+			cleanup_state & CLEANUP_DONGLE_MUTEXES,
+			cleanup_state & CLEANUP_DONGLE_CONDS);
+	if (cleanup_state & CLEANUP_CODERS)
+		cleanup_coders_range(data, data->number_of_coders,
+			cleanup_state & CLEANUP_CODER_MUTEXES);
+	if (cleanup_state & CLEANUP_CORE_MUTEXES)
+	{
+		pthread_mutex_destroy(&data->stop_mutex);
+		pthread_mutex_destroy(&data->print_mutex);
+	}
+	free(data);
+	return (1);
+}
 
 static int	launch_coders(t_data *data)
 {
@@ -77,28 +101,6 @@ static int	launch_coders(t_data *data)
 	else
 		return (0);
 	return (1);
-}
-
-int	main(int argc, char *argv[])
-{
-	t_data	*data;
-	int		cleanup_state;
-	int		status;
-
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (1);
-	*data = (t_data){0};
-	if (parse(data, argc, argv) != 0)
-		return (free(data), 1);
-	if (init_resources(data, &cleanup_state) != 0)
-		return (cleanup_data(data, cleanup_state));
-	print_data(data);
-	status = launch_coders(data);
-	if (status != 0)
-		return (cleanup_data(data, cleanup_state));
-	cleanup_data(data, cleanup_state);
-	return (0);
 }
 
 void	print_data(t_data *data)
