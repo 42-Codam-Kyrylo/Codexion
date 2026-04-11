@@ -49,11 +49,17 @@ static void	take_dongle(t_coder *coder, int idx)
 	insert_heap(dongle->queue, node);
 	while (!can_take_dongle(dongle, coder))
 	{
+		if (get_is_simulation_end(coder->data))
+		{
+			pop_node_by_id(dongle->queue, coder->id);
+			pthread_mutex_unlock(&dongle->mutex);
+			return ;
+		}
 		pthread_cond_wait(&dongle->cond, &dongle->mutex);
 	}
+	pop_heap(dongle->queue);
 	dongle->status = DONGLE_OCCUPIED;
 	print_status(coder, "has taken a dongle");
-	pop_heap(dongle->queue);
 	pthread_mutex_unlock(&dongle->mutex);
 }
 
@@ -78,6 +84,15 @@ static void	release_dongle(t_coder *coder, int idx)
 	pthread_mutex_unlock(&dongle->mutex);
 }
 
+/**
+ * @brief Checks whether the coder may acquire this dongle now.
+ *
+ * Requires a free dongle, cooldown elapsed, and this coder at queue head.
+ *
+ * @param dongle Target dongle.
+ * @param coder Current coder.
+ * @return 1 if the coder can take the dongle, otherwise 0.
+ */
 static int	can_take_dongle(t_dongle *dongle, t_coder *coder)
 {
 	long elapsed;

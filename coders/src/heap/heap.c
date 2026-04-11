@@ -76,12 +76,7 @@ void	insert_heap(t_heap *heap, t_node node)
 	i = heap->size;
 	heap->size++;
 	heap->array[i] = node;
-	while (i != 0
-		&& heap->array[get_parent(i)].priority > heap->array[i].priority)
-	{
-		swap_heap(&heap->array[i], &heap->array[get_parent(i)]);
-		i = get_parent(i);
-	}
+	bubble_up_from(heap, i);
 }
 
 /**

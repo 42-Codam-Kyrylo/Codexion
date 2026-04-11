@@ -115,6 +115,10 @@ t_node					pop_heap(t_heap *heap);
 int						get_left_child(int i);
 int						get_right_child(int i);
 int						get_parent(int i);
+int						should_bubble_up(t_heap *heap, int i);
+int						pop_node_by_id(t_heap *heap, int coder_id);
+void					bubble_up_from(t_heap *heap, int i);
+void					heapify(t_heap *heap, int i);
 
 int						init_coders(t_data *data);
 int						init_coder_mutexes(t_data *data);
