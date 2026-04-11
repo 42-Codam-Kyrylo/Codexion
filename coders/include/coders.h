@@ -147,6 +147,8 @@ int						init_dongle_conds(t_data *data);
 void					update_compiling_at(t_coder *coder);
 void					get_dongle_lock_order(t_coder *coder, int *first,
 							int *second);
+void				prepare_dongle_wait_time(t_dongle *dongle, t_data *data,
+								struct timespec *ts);
 void					coder_compile(t_coder *coder);
 long long				get_node_priority(t_coder *coder);
 void					*monitor_routine(void *arg);

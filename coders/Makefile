@@ -34,6 +34,7 @@ SRC = \
 	$(SRC_DIR)/coder/coder_helpers.c \
 	$(SRC_DIR)/coder/coder_routine.c \
 	$(SRC_DIR)/coder/coder_actions.c \
+	$(SRC_DIR)/coder/coder_utils.c \
 	$(SRC_DIR)/monitor/monitor_routine.c \
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

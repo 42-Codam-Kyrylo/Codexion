@@ -41,8 +41,6 @@ void	coder_compile(t_coder *coder)
 static void	take_dongle(t_coder *coder, int idx)
 {
 	t_dongle		*dongle;
-	long long		release_time;
-	long long		wait_until_ms;
 	struct timespec	ts;
 
 	dongle = &coder->data->dongles[idx];
@@ -62,10 +60,7 @@ static void	take_dongle(t_coder *coder, int idx)
 		}
 		if (dongle->status == DONGLE_FREE && is_my_turn(dongle, coder))
 		{
-			release_time = dongle->last_released_at;
-			wait_until_ms = release_time + coder->data->dongle_cooldown + 1;
-			ts.tv_sec = wait_until_ms / 1000;
-			ts.tv_nsec = (wait_until_ms % 1000) * 1000000;
+			prepare_dongle_wait_time(dongle, coder->data, &ts);
 			pthread_cond_timedwait(&dongle->cond, &dongle->mutex, &ts);
 		}
 		else
