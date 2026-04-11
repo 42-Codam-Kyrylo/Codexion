@@ -29,6 +29,7 @@ SRC = \
 	$(SRC_DIR)/init/initialization_coders.c \
 	$(SRC_DIR)/init/initialization_common.c \
 	$(SRC_DIR)/init/initialization_dongles.c \
+	$(SRC_DIR)/coder/coder_helpers.c \
 	$(SRC_DIR)/coder/coder_routine.c
 	
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

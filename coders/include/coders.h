@@ -102,6 +102,8 @@ int						ft_isdigit(int c);
 int						ft_isdigitstr(char *s);
 long long				ft_atoll(const char *str);
 long long				get_current_time(void);
+int						get_is_simulation_end(t_data *data);
+void					print_status(t_coder *coder, const char *msg);
 
 // heap
 t_heap					*create_heap(int capacity);
