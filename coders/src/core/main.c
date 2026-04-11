@@ -15,15 +15,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define CLEANUP_CORE_MUTEXES 1
+#define CLEANUP_DONGLES 2
+#define CLEANUP_DONGLE_MUTEXES 4
+
 void		print_data(t_data *data);
 
-static int	cleanup_data(t_data *data, int destroy_core_mutexes,
-		int destroy_dongles, int destroy_dongle_mutexes)
+static int	cleanup_data(t_data *data, int cleanup_state)
 {
-	if (destroy_dongles)
+	if (cleanup_state & CLEANUP_DONGLES)
 		cleanup_dongles_range(data, data->number_of_coders,
-			destroy_dongle_mutexes);
-	if (destroy_core_mutexes)
+			cleanup_state & CLEANUP_DONGLE_MUTEXES);
+	if (cleanup_state & CLEANUP_CORE_MUTEXES)
 	{
 		pthread_mutex_destroy(&data->stop_mutex);
 		pthread_mutex_destroy(&data->print_mutex);
@@ -33,21 +36,18 @@ static int	cleanup_data(t_data *data, int destroy_core_mutexes,
 	return (1);
 }
 
-static int	init_resources(t_data *data, int *core_mutexes, int *dongles,
-		int *dongle_mutexes)
+static int	init_resources(t_data *data, int *cleanup_state)
 {
-	*core_mutexes = 0;
-	*dongles = 0;
-	*dongle_mutexes = 0;
+	*cleanup_state = 0;
 	if (init_data_mutexes(data) != 0)
 		return (1);
-	*core_mutexes = 1;
+	*cleanup_state |= CLEANUP_CORE_MUTEXES;
 	if (init_dongles(data) != 0)
 		return (1);
-	*dongles = 1;
+	*cleanup_state |= CLEANUP_DONGLES;
 	if (init_dongle_mutexes(data) != 0)
 		return (1);
-	*dongle_mutexes = 1;
+	*cleanup_state |= CLEANUP_DONGLE_MUTEXES;
 	return (0);
 }
 
@@ -69,27 +69,22 @@ static int	launch_coders(t_data *data)
 int	main(int argc, char *argv[])
 {
 	t_data	*data;
-	int		core_mutexes;
-	int		dongles;
-	int		dongle_mutexes;
+	int		cleanup_state;
+	int		status;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
 	*data = (t_data){0};
 	if (parse(data, argc, argv) != 0)
-	{
-		free(data);
-		return (1);
-	}
-	if (init_resources(data, &core_mutexes, &dongles, &dongle_mutexes) != 0)
-	{
-		return (cleanup_data(data, core_mutexes, dongles, dongle_mutexes));
-	}
+		return (free(data), 1);
+	if (init_resources(data, &cleanup_state) != 0)
+		return (cleanup_data(data, cleanup_state));
 	print_data(data);
-	if (launch_coders(data) != 0)
-		return (cleanup_data(data, core_mutexes, dongles, dongle_mutexes));
-	cleanup_data(data, core_mutexes, dongles, dongle_mutexes);
+	status = launch_coders(data);
+	if (status != 0)
+		return (cleanup_data(data, cleanup_state));
+	cleanup_data(data, cleanup_state);
 	return (0);
 }
 
