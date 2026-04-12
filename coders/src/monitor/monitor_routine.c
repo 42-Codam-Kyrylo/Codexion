@@ -6,7 +6,7 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/04/11 17:30:00 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/04/12 21:12:54 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ static void	handle_stop_event(t_data *data, int burned_out_id)
 	if (burned_out_id)
 		printf("%lld %d burned out\n", get_timestamp(data->start_time),
 			burned_out_id);
-	else
-		printf("DONE"); // TODO delete
 	pthread_mutex_unlock(&data->print_mutex);
 }
 
