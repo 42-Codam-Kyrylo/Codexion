@@ -42,6 +42,12 @@ int	main(int argc, char *argv[])
 static int	init_resources(t_data *data, int *cleanup_state)
 {
 	*cleanup_state = 0;
+	data->log_file = fopen("coders.log", "w");
+	if (!data->log_file)
+	{
+		perror("Error opening coders.log");
+		return (1);
+	}
 	if (init_data_mutexes(data) != 0)
 		return (1);
 	*cleanup_state |= CLEANUP_CORE_MUTEXES;
@@ -79,6 +85,8 @@ static int	cleanup_data(t_data *data, int cleanup_state)
 		pthread_mutex_destroy(&data->stop_mutex);
 		pthread_mutex_destroy(&data->print_mutex);
 	}
+	if (data->log_file)
+		fclose(data->log_file);
 	free(data);
 	return (1);
 }
@@ -86,14 +94,18 @@ static int	cleanup_data(t_data *data, int cleanup_state)
 void	print_data(t_data *data)
 {
 	pthread_mutex_lock(&data->print_mutex);
-	printf("{\"status\": \"INITIALIZE\", \"num_coders\": %d, "
-		"\"time_to_burnout\": %lld, \"time_to_compile\": %lld, "
-		"\"time_to_debug\": %lld, \"time_to_refactor\": %lld, "
-		"\"num_compiles_required\": %d, \"dongle_cooldown\": %lld, "
-		"\"scheduler\": \"%s\"}\n", data->number_of_coders,
-		data->time_to_burnout, data->time_to_compile, data->time_to_debug,
-		data->time_to_refactor, data->number_of_compiles_required,
-		data->dongle_cooldown, (data->scheduler == CODERS_SCHED_FIFO) ? "FIFO"
-		: "EDF");
+	if (data->log_file)
+	{
+		fprintf(data->log_file, "{\"status\": \"INITIALIZE\", \"num_coders\": %d, "
+			"\"time_to_burnout\": %lld, \"time_to_compile\": %lld, "
+			"\"time_to_debug\": %lld, \"time_to_refactor\": %lld, "
+			"\"num_compiles_required\": %d, \"dongle_cooldown\": %lld, "
+			"\"scheduler\": \"%s\"}\n", data->number_of_coders,
+			data->time_to_burnout, data->time_to_compile, data->time_to_debug,
+			data->time_to_refactor, data->number_of_compiles_required,
+			data->dongle_cooldown, (data->scheduler == CODERS_SCHED_FIFO) ? "FIFO"
+			: "EDF");
+		fflush(data->log_file);
+	}
 	pthread_mutex_unlock(&data->print_mutex);
 }

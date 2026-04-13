@@ -1,0 +1,42 @@
+{"status": "INITIALIZE", "num_coders": 5, "time_to_burnout": 500, "time_to_compile": 100, "time_to_debug": 100, "time_to_refactor": 100, "num_compiles_required": 5, "dongle_cooldown": 50, "scheduler": "EDF"}
+{"ts": 0, "status": "REQUEST_DONGLE", "coder_id": 1, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 1, "queue": [1], "priorities": [500]}
+{"ts": 1, "status": "TAKE_DONGLE", "coder_id": 1, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 1, "queue": [], "priorities": []}
+{"ts": 1, "status": "REQUEST_DONGLE", "coder_id": 1, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 5, "queue": [1], "priorities": [500]}
+{"ts": 1, "status": "REQUEST_DONGLE", "coder_id": 4, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 3, "queue": [4], "priorities": [500]}
+{"ts": 1, "status": "REQUEST_DONGLE", "coder_id": 3, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 2, "queue": [3], "priorities": [500]}
+{"ts": 1, "status": "TAKE_DONGLE", "coder_id": 1, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 5, "queue": [], "priorities": []}
+{"ts": 1, "status": "TAKE_DONGLE", "coder_id": 4, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 3, "queue": [], "priorities": []}
+{"ts": 1, "status": "REQUEST_DONGLE", "coder_id": 2, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 1, "queue": [2], "priorities": [500]}
+{"ts": 1, "status": "REQUEST_DONGLE", "coder_id": 5, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 4, "queue": [5], "priorities": [500]}
+{"ts": 1, "status": "TAKE_DONGLE", "coder_id": 3, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 2, "queue": [], "priorities": []}
+{"ts": 1, "status": "REQUEST_DONGLE", "coder_id": 3, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 3, "queue": [3], "priorities": [500]}
+{"ts": 1, "status": "START_COMPILE", "coder_id": 1, "details": {"compiles_done": 0, "deadline": 501}}
+{"ts": 1, "status": "TAKE_DONGLE", "coder_id": 5, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 4, "queue": [], "priorities": []}
+{"ts": 1, "status": "REQUEST_DONGLE", "coder_id": 5, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 5, "queue": [5], "priorities": [500]}
+{"ts": 1, "status": "REQUEST_DONGLE", "coder_id": 4, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 4, "queue": [4], "priorities": [500]}
+{"ts": 101, "status": "RELEASE_DONGLE", "coder_id": 1, "details": {"compiles_done": 0, "deadline": 501}, "dongle_id": 1, "queue": [2], "priorities": [500]}
+{"ts": 101, "status": "RELEASE_DONGLE", "coder_id": 1, "details": {"compiles_done": 0, "deadline": 501}, "dongle_id": 5, "queue": [5], "priorities": [500]}
+{"ts": 101, "status": "START_DEBUG", "coder_id": 1, "details": {"compiles_done": 1, "deadline": 501}}
+{"ts": 152, "status": "TAKE_DONGLE", "coder_id": 5, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 5, "queue": [], "priorities": []}
+{"ts": 152, "status": "START_COMPILE", "coder_id": 5, "details": {"compiles_done": 0, "deadline": 652}}
+{"ts": 152, "status": "TAKE_DONGLE", "coder_id": 2, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 1, "queue": [], "priorities": []}
+{"ts": 152, "status": "REQUEST_DONGLE", "coder_id": 2, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 2, "queue": [2], "priorities": [500]}
+{"ts": 201, "status": "START_REFACTOR", "coder_id": 1, "details": {"compiles_done": 1, "deadline": 501}}
+{"ts": 252, "status": "RELEASE_DONGLE", "coder_id": 5, "details": {"compiles_done": 0, "deadline": 652}, "dongle_id": 4, "queue": [4], "priorities": [500]}
+{"ts": 252, "status": "RELEASE_DONGLE", "coder_id": 5, "details": {"compiles_done": 0, "deadline": 652}, "dongle_id": 5, "queue": [], "priorities": []}
+{"ts": 252, "status": "START_DEBUG", "coder_id": 5, "details": {"compiles_done": 1, "deadline": 652}}
+{"ts": 301, "status": "REQUEST_DONGLE", "coder_id": 1, "details": {"compiles_done": 1, "deadline": 501}, "dongle_id": 1, "queue": [1], "priorities": [501]}
+{"ts": 303, "status": "TAKE_DONGLE", "coder_id": 4, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 4, "queue": [], "priorities": []}
+{"ts": 303, "status": "START_COMPILE", "coder_id": 4, "details": {"compiles_done": 0, "deadline": 803}}
+{"ts": 352, "status": "START_REFACTOR", "coder_id": 5, "details": {"compiles_done": 1, "deadline": 652}}
+{"ts": 403, "status": "RELEASE_DONGLE", "coder_id": 4, "details": {"compiles_done": 0, "deadline": 803}, "dongle_id": 3, "queue": [3], "priorities": [500]}
+{"ts": 403, "status": "RELEASE_DONGLE", "coder_id": 4, "details": {"compiles_done": 0, "deadline": 803}, "dongle_id": 4, "queue": [], "priorities": []}
+{"ts": 403, "status": "START_DEBUG", "coder_id": 4, "details": {"compiles_done": 1, "deadline": 803}}
+{"ts": 452, "status": "REQUEST_DONGLE", "coder_id": 5, "details": {"compiles_done": 1, "deadline": 652}, "dongle_id": 4, "queue": [5], "priorities": [652]}
+{"ts": 454, "status": "TAKE_DONGLE", "coder_id": 5, "details": {"compiles_done": 1, "deadline": 652}, "dongle_id": 4, "queue": [], "priorities": []}
+{"ts": 454, "status": "REQUEST_DONGLE", "coder_id": 5, "details": {"compiles_done": 1, "deadline": 652}, "dongle_id": 5, "queue": [5], "priorities": [652]}
+{"ts": 454, "status": "TAKE_DONGLE", "coder_id": 5, "details": {"compiles_done": 1, "deadline": 652}, "dongle_id": 5, "queue": [], "priorities": []}
+{"ts": 454, "status": "START_COMPILE", "coder_id": 5, "details": {"compiles_done": 1, "deadline": 954}}
+{"ts": 454, "status": "TAKE_DONGLE", "coder_id": 3, "details": {"compiles_done": 0, "deadline": 500}, "dongle_id": 3, "queue": [], "priorities": []}
+{"ts": 454, "status": "START_COMPILE", "coder_id": 3, "details": {"compiles_done": 0, "deadline": 954}}
+{"ts": 500, "status": "BURNOUT", "coder_id": 2, "details": {"compiles_done": 0, "deadline": 1000}}

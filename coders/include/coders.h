@@ -101,6 +101,7 @@ struct					s_data
 	t_sched				scheduler;
 
 	pthread_mutex_t		print_mutex;
+	FILE				*log_file;
 	pthread_t			monitor;
 	t_coder				*coders;
 	t_dongle			*dongles;
