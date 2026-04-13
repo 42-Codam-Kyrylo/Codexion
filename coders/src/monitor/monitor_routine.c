@@ -47,11 +47,17 @@ static void	handle_stop_event(t_data *data, int burned_out_id)
 	wake_all_dongle_waiters(data);
 	pthread_mutex_lock(&data->print_mutex);
 	if (burned_out_id)
+	{
 		printf("%lld %d burned out\n", get_timestamp(data->start_time),
 			burned_out_id);
+		pthread_mutex_unlock(&data->print_mutex);
+		log_json(data, "BURNOUT", &data->coders[burned_out_id - 1], NULL);
+	}
 	else
-		printf("DONE"); // TODO delete
-	pthread_mutex_unlock(&data->print_mutex);
+	{
+		pthread_mutex_unlock(&data->print_mutex);
+		log_json(data, "SUCCESS", NULL, NULL);
+	}
 }
 
 static int	all_compiles_done(t_data *data)

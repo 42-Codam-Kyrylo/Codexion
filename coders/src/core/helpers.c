@@ -13,6 +13,7 @@
 #include "coders.h"
 #include <limits.h>
 #include <sys/time.h>
+#include <string.h>
 
 int	ft_isdigit(int c)
 {
@@ -61,4 +62,52 @@ long long	get_current_time(void)
 	if (gettimeofday(&tv, NULL) == -1)
 		return (0);
 	return ((long long)tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
+static void	print_heap_json(t_data *data, t_heap *heap)
+{
+	int	i;
+
+	printf(", \"queue\": [");
+	i = 0;
+	while (i < heap->size)
+	{
+		printf("%d%s", heap->array[i].coder_id, (i == heap->size - 1) ? "" : ",");
+		i++;
+	}
+	printf("], \"priorities\": [");
+	i = 0;
+	while (i < heap->size)
+	{
+		printf("%lld%s", heap->array[i].priority - data->start_time,
+			(i == heap->size - 1) ? "" : ",");
+		i++;
+	}
+	printf("]");
+}
+
+void	log_json(t_data *data, const char *status, t_coder *coder,
+			t_dongle *dongle)
+{
+	pthread_mutex_lock(&data->print_mutex);
+	if (!get_is_simulation_end(data) || !strcmp(status, "BURNOUT")
+		|| !strcmp(status, "SUCCESS"))
+	{
+		printf("{\"ts\": %lld, \"status\": \"%s\"",
+			get_timestamp(data->start_time), status);
+		if (coder)
+		{
+			printf(", \"coder_id\": %d, \"details\": {\"compiles_done\": %d, "
+				"\"deadline\": %lld}", coder->id, coder->compiles_done,
+				coder->last_compiling_at + data->time_to_burnout
+				- data->start_time);
+		}
+		if (dongle)
+		{
+			printf(", \"dongle_id\": %d", dongle->id);
+			print_heap_json(data, dongle->queue);
+		}
+		printf("}\n");
+	}
+	pthread_mutex_unlock(&data->print_mutex);
 }

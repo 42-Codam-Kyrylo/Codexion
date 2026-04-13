@@ -85,23 +85,15 @@ static int	cleanup_data(t_data *data, int cleanup_state)
 
 void	print_data(t_data *data)
 {
-	const char	*scheduler;
-
-	if (!data)
-		return ;
-	if (data->scheduler == CODERS_SCHED_FIFO)
-		scheduler = "FIFO";
-	else if (data->scheduler == CODERS_SCHED_EDF)
-		scheduler = "EDF";
-	else
-		scheduler = "UNKNOWN";
-	printf("number_of_coders: %d\n", data->number_of_coders);
-	printf("time_to_burnout: %lld\n", data->time_to_burnout);
-	printf("time_to_compile: %lld\n", data->time_to_compile);
-	printf("time_to_debug: %lld\n", data->time_to_debug);
-	printf("time_to_refactor: %lld\n", data->time_to_refactor);
-	printf("number_of_compiles_required: %d\n",
-		data->number_of_compiles_required);
-	printf("dongle_cooldown: %lld\n", data->dongle_cooldown);
-	printf("scheduler: %s\n", scheduler);
+	pthread_mutex_lock(&data->print_mutex);
+	printf("{\"status\": \"INITIALIZE\", \"num_coders\": %d, "
+		"\"time_to_burnout\": %lld, \"time_to_compile\": %lld, "
+		"\"time_to_debug\": %lld, \"time_to_refactor\": %lld, "
+		"\"num_compiles_required\": %d, \"dongle_cooldown\": %lld, "
+		"\"scheduler\": \"%s\"}\n", data->number_of_coders,
+		data->time_to_burnout, data->time_to_compile, data->time_to_debug,
+		data->time_to_refactor, data->number_of_compiles_required,
+		data->dongle_cooldown, (data->scheduler == CODERS_SCHED_FIFO) ? "FIFO"
+		: "EDF");
+	pthread_mutex_unlock(&data->print_mutex);
 }

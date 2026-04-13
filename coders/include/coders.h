@@ -17,6 +17,7 @@
 # define CODERS_H
 
 # include <pthread.h>
+# include <stdio.h>
 
 # define CLEANUP_CORE_MUTEXES 1
 # define CLEANUP_DONGLES 2
@@ -112,6 +113,8 @@ long long				ft_atoll(const char *str);
 long long				get_current_time(void);
 int						get_is_simulation_end(t_data *data);
 void					print_status(t_coder *coder, const char *msg);
+void					log_json(t_data *data, const char *status, t_coder *coder,
+							t_dongle *dongle);
 
 t_heap					*create_heap(int capacity);
 void					swap_heap(t_node *a, t_node *b);
