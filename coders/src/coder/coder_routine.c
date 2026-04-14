@@ -43,7 +43,11 @@ void	*coder_routine(void *arg)
  */
 void	ft_sleep(long long time)
 {
-	usleep(time * 1000);
+	long long	start;
+
+	start = get_current_time();
+	while (get_current_time() - start < time)
+		usleep(500);
 }
 
 long long	get_timestamp(long long simulation_start_time)

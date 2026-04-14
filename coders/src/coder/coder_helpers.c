@@ -57,15 +57,15 @@ void	get_dongle_lock_order(t_coder *coder, int *first, int *second)
 	n = coder->data->number_of_coders;
 	left_dongle = i;
 	right_dongle = (i - 1 + n) % n;
-	if (coder->id % 2 != 0)
-	{
-		*first = left_dongle;
-		*second = right_dongle;
-	}
-	else
+	if (coder->id == 1)
 	{
 		*first = right_dongle;
 		*second = left_dongle;
+	}
+	else
+	{
+		*first = left_dongle;
+		*second = right_dongle;
 	}
 }
 

@@ -63,6 +63,7 @@ typedef struct s_coder
 	t_coder_status		status;
 	t_data				*data;
 	long long			last_compiling_at;
+	long long			request_time;
 	pthread_mutex_t		mutex;
 	int					compiles_done;
 }						t_coder;
