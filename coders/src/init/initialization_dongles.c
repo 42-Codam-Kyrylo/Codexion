@@ -13,7 +13,6 @@
 #include "coders.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 void	cleanup_dongles_range(t_data *data, int count, int destroy_mutexes,
 		int destroy_conds)
@@ -75,8 +74,7 @@ int	init_dongle_mutexes(t_data *data)
 		if (status != 0)
 		{
 			cleanup_dongles_range(data, i, 1, 0);
-			fprintf(stderr, "Error mutex init dongle_mutex: %s\n",
-				strerror(status));
+			printf("Error mutex init dongle_mutex: %d\n", status);
 			return (1);
 		}
 		i++;
@@ -96,8 +94,7 @@ int	init_dongle_conds(t_data *data)
 		if (status != 0)
 		{
 			cleanup_dongles_range(data, i, 1, 1);
-			fprintf(stderr, "Error cond init dongle_cond: %s\n",
-				strerror(status));
+			printf("Error cond init dongle_cond: %d\n", status);
 			return (1);
 		}
 		i++;

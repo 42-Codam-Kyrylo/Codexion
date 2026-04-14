@@ -12,7 +12,6 @@
 
 #include "coders.h"
 #include <stdio.h>
-#include <string.h>
 
 int	init_start_time(t_data *data)
 {
@@ -32,13 +31,13 @@ int	init_data_mutexes(t_data *data)
 	status = pthread_mutex_init(&data->stop_mutex, NULL);
 	if (status != 0)
 	{
-		fprintf(stderr, "Error mutex init stop_mutex: %s\n", strerror(status));
+		printf("Error mutex init stop_mutex: %d\n", status);
 		return (1);
 	}
 	status = pthread_mutex_init(&data->print_mutex, NULL);
 	if (status != 0)
 	{
-		fprintf(stderr, "Error mutex init print_mutex: %s\n", strerror(status));
+		printf("Error mutex init print_mutex: %d\n", status);
 		pthread_mutex_destroy(&data->stop_mutex);
 		return (1);
 	}

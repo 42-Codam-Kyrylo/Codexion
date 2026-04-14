@@ -13,7 +13,6 @@
 #include "coders.h"
 #include <pthread.h>
 #include <stdio.h>
-#include <string.h>
 
 static int	handle_monitor_error(t_data *data)
 {
@@ -32,7 +31,7 @@ static int	handle_join_error(t_data *data)
 	wake_all_dongle_waiters(data);
 	status = pthread_join(data->monitor, NULL);
 	if (status != 0)
-		fprintf(stderr, "Error join monitor: %s\n", strerror(status));
+		printf("Error join monitor: %d\n", status);
 	return (1);
 }
 
@@ -43,7 +42,7 @@ static int	join_monitor(t_data *data)
 	status = pthread_join(data->monitor, NULL);
 	if (status != 0)
 	{
-		fprintf(stderr, "Error join monitor: %s\n", strerror(status));
+		printf("Error join monitor: %d\n", status);
 		return (1);
 	}
 	return (0);

@@ -13,7 +13,6 @@
 #include "coders.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 void	cleanup_coders_range(t_data *data, int count, int destroy_mutexes)
 {
@@ -66,8 +65,7 @@ int	init_coder_mutexes(t_data *data)
 		if (status != 0)
 		{
 			cleanup_coders_range(data, i, 1);
-			fprintf(stderr, "Error mutex init coder_mutex: %s\n",
-				strerror(status));
+			printf("Error mutex init coder_mutex: %d\n", status);
 			return (1);
 		}
 		i++;
@@ -87,7 +85,7 @@ int	start_coders(t_data *data)
 				(void *)&data->coders[i]);
 		if (status != 0)
 		{
-			fprintf(stderr, "Error create: %s\n", strerror(status));
+			printf("Error create: %d\n", status);
 			return (1);
 		}
 		i++;
@@ -106,7 +104,7 @@ int	join_coders(t_data *data)
 		status = pthread_join(data->coders[i].thread, NULL);
 		if (status != 0)
 		{
-			fprintf(stderr, "Error join: %s\n", strerror(status));
+			printf("Error join: %d\n", status);
 			return (1);
 		}
 		i++;

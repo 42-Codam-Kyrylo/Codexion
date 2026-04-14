@@ -12,7 +12,6 @@
 
 #include "coders.h"
 #include <stdio.h>
-#include <string.h>
 
 int	start_monitor(t_data *data)
 {
@@ -22,7 +21,7 @@ int	start_monitor(t_data *data)
 			(void *)data);
 	if (status != 0)
 	{
-		fprintf(stderr, "Error create: %s\n", strerror(status));
+		printf("Error create: %d\n", status);
 		return (1);
 	}
 	return (0);
