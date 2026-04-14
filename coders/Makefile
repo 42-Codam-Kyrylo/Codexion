@@ -6,7 +6,7 @@
 #    By: kvolynsk <kvolynsk@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2026/03/24 20:16:47 by kvolynsk      #+#    #+#                  #
-#    Updated: 2026/04/10 20:49:02 by kvolynsk      ########   odam.nl          #
+#    Updated: 2026/04/14 23:20:54 by kvolynsk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ fclean: clean
 re: fclean all
 
 run: $(NAME)
-	./$(NAME) 5 500 100 100 100 5 50 edf
+	./$(NAME) 6 500 100 100 100 5 50 edf
 
 .PHONY: all clean fclean re run
 
