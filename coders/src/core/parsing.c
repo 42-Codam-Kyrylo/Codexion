@@ -6,7 +6,7 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/03/24 20:16:32 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/04/14 22:45:06 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	parse(t_data *data, int argc, char *argv[])
 {
 	if (argc != 9)
 	{
-		printf("ERROR: enter all arguments!\n");
+		printf("ERROR: enter only 9 arguments!\n");
 		return (1);
 	}
 	if (parse_numeric_arguments(data, argv) != 0)
