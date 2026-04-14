@@ -207,7 +207,8 @@ Example expected output (3 coders, successful completion):
 
 **Mitigation**:
 
-- Enforce strict lock ordering: always acquire left dongle **before** right dongle (by coder ID).
+- Use asymmetric dongle acquisition: odd coders lock left then right, even coders lock right then left.
+- This breaks circular wait and also reduces contention hotspots, improving throughput under load.
 - If a coder cannot acquire both within the scheduler's arbitration, the scheduler rejects the current request and enqueues for retry.
 - Timeout on condition variables prevents indefinite waits if state becomes inconsistent.
 
@@ -349,7 +350,7 @@ Example expected output (3 coders, successful completion):
 **Dongle state** (set of { available_at, owner }):
 
 - Protected by per-dongle mutex.
-- Coder atomically locks both left and right dongle mutexes in ID order before checking or updating state.
+- Coder atomically locks both dongle mutexes using an asymmetric order (odd: left->right, even: right->left) before checking or updating state.
 - Prevents race where one thread reads "left available," another thread acquires it, then first thread re-checks and sees stale data.
 
 **Scheduler (priority queue)**:
@@ -387,7 +388,7 @@ if (left_free) {                if (left_free) {
 
 ```c
 pthread_mutex_lock(&mutex_left);
-pthread_mutex_lock(&mutex_right); // Lock in order; left < right
+pthread_mutex_lock(&mutex_right); // Lock in the coder-specific asymmetric order
 if (left->owner == -1 && left->available_at <= now) {
   left->owner = coder_id;
 }
