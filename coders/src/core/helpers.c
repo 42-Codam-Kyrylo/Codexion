@@ -6,7 +6,7 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/03/24 20:16:36 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/04/14 22:41:24 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ int	ft_isdigitstr(char *s)
 	i = 0;
 	while (s[i])
 	{
+		if (s[0] == '+' || s[0] == '-')
+		{
+			i++;
+			continue ;
+		}
 		if (!ft_isdigit(s[i]))
 			return (0);
 		i++;
