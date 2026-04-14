@@ -6,7 +6,7 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/04/11 15:11:00 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/04/11 15:11:00 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/04/14 22:22:45 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,29 @@ void	increment_compiles_done(t_coder *coder)
 	pthread_mutex_unlock(&coder->mutex);
 }
 
+void	get_dongle_lock_order(t_coder *coder, int *first, int *second)
+{
+	int	i;
+	int	n;
+	int	left_dongle;
+	int	right_dongle;
+
+	i = coder->id - 1;
+	n = coder->data->number_of_coders;
+	left_dongle = i;
+	right_dongle = (i - 1 + n) % n;
+	if (coder->id % 2 != 0)
+	{
+		*first = left_dongle;
+		*second = right_dongle;
+	}
+	else
+	{
+		*first = right_dongle;
+		*second = left_dongle;
+	}
+}
+
 /**
  * @brief Computes a deterministic dongle lock order for one coder.
  *
@@ -56,22 +79,22 @@ void	increment_compiles_done(t_coder *coder)
  * @param first Output: lower dongle index to lock first.
  * @param second Output: higher dongle index to lock second.
  */
-void	get_dongle_lock_order(t_coder *coder, int *first, int *second)
-{
-	int	left_dongle_idx;
-	int	right_dongle_idx;
+// void	get_dongle_lock_order(t_coder *coder, int *first, int *second)
+// {
+// 	int	left_dongle_idx;
+// 	int	right_dongle_idx;
 
-	left_dongle_idx = coder->id - 1;
-	right_dongle_idx = (left_dongle_idx - 1 + coder->data->number_of_coders)
-		% coder->data->number_of_coders;
-	if (left_dongle_idx < right_dongle_idx)
-	{
-		*first = left_dongle_idx;
-		*second = right_dongle_idx;
-	}
-	else
-	{
-		*first = right_dongle_idx;
-		*second = left_dongle_idx;
-	}
-}
+// 	left_dongle_idx = coder->id - 1;
+// 	right_dongle_idx = (left_dongle_idx - 1 + coder->data->number_of_coders)
+// 		% coder->data->number_of_coders;
+// 	if (left_dongle_idx < right_dongle_idx)
+// 	{
+// 		*first = left_dongle_idx;
+// 		*second = right_dongle_idx;
+// 	}
+// 	else
+// 	{
+// 		*first = right_dongle_idx;
+// 		*second = left_dongle_idx;
+// 	}
+// }
