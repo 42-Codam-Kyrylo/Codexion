@@ -57,44 +57,14 @@ void	get_dongle_lock_order(t_coder *coder, int *first, int *second)
 	n = coder->data->number_of_coders;
 	left_dongle = i;
 	right_dongle = (i - 1 + n) % n;
-	if (coder->id % 2 != 0)
-	{
-		*first = left_dongle;
-		*second = right_dongle;
-	}
-	else
+	if (coder->id == 1)
 	{
 		*first = right_dongle;
 		*second = left_dongle;
 	}
+	else
+	{
+		*first = left_dongle;
+		*second = right_dongle;
+	}
 }
-
-/**
- * @brief Computes a deterministic dongle lock order for one coder.
- *
- * Gets the coder's two dongle indices and stores them in ascending order
- * so all threads lock dongles consistently and avoid deadlocks.
- *
- * @param coder Current coder.
- * @param first Output: lower dongle index to lock first.
- * @param second Output: higher dongle index to lock second.
- */
-// void	get_dongle_lock_order(t_coder *coder, int *first, int *second)
-// {
-// 	int	left_dongle_idx;
-// 	int	right_dongle_idx;
-
-// 	left_dongle_idx = coder->id - 1;
-// 	right_dongle_idx = (left_dongle_idx - 1 + coder->data->number_of_coders)
-// 		% coder->data->number_of_coders;
-// 	if (left_dongle_idx < right_dongle_idx)
-// 	{
-// 		*first = left_dongle_idx;
-// 		*second = right_dongle_idx;
-// 	}
-// 	else
-// 	{
-// 		*first = right_dongle_idx;
-// 		*second = left_dongle_idx;
-// 	}
-// }
