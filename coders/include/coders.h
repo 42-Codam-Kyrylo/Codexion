@@ -6,7 +6,7 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/03/24 20:16:39 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/04/11 17:30:00 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/04/15 20:08:39 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,6 @@ int						launch_simulation(t_data *data);
 void					stop_simulation(t_data *data);
 void					wake_all_dongle_waiters(t_data *data);
 void					increment_compiles_done(t_coder *coder);
+int						can_take_dongle(t_dongle *dongle, t_coder *coder);
 
 #endif

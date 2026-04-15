@@ -6,7 +6,7 @@
 /*   By: kvolynsk <kvolynsk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2026/04/11 17:30:00 by kvolynsk      #+#    #+#                 */
-/*   Updated: 2026/04/14 22:22:21 by kvolynsk      ########   odam.nl         */
+/*   Updated: 2026/04/15 20:09:11 by kvolynsk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	enqueue_dongle(t_coder *coder, int idx);
 static void	acquire_dongle(t_coder *coder, int idx);
 static void	release_dongle(t_coder *coder, int idx);
 static int	wait_for_dongle(t_dongle *dongle, t_coder *coder);
-static int	can_take_dongle(t_dongle *dongle, t_coder *coder);
 
 /**
  * @brief Performs one full compile cycle for a coder.
@@ -43,6 +42,7 @@ void	coder_compile(t_coder *coder)
 	release_dongle(coder, first);
 	release_dongle(coder, second);
 }
+
 /**
  * @brief Enqueues the coder into the dongle's wait-queue.
  *
@@ -129,23 +129,4 @@ static void	release_dongle(t_coder *coder, int idx)
 	dongle->last_released_at = get_current_time();
 	pthread_cond_broadcast(&dongle->cond);
 	pthread_mutex_unlock(&dongle->mutex);
-}
-
-/**
- * @brief Checks whether the coder may acquire this dongle now.
- *
- * Requires a free dongle, cooldown elapsed, and this coder at queue head.
- *
- * @param dongle Target dongle.
- * @param coder Current coder.
- * @return 1 if the coder can take the dongle, otherwise 0.
- */
-static int	can_take_dongle(t_dongle *dongle, t_coder *coder)
-{
-	long	elapsed;
-
-	elapsed = get_current_time() - dongle->last_released_at;
-	return (dongle->status == DONGLE_FREE
-		&& elapsed >= coder->data->dongle_cooldown
-		&& dongle->queue->array[0].coder_id == coder->id);
 }
