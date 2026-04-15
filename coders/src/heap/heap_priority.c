@@ -55,7 +55,7 @@ void	bubble_up_from(t_heap *heap, int i)
 long long	get_node_priority(t_coder *coder)
 {
 	if (coder->data->scheduler == CODERS_SCHED_FIFO)
-		return (get_current_time());
+		return (coder->request_time);
 	if (coder->data->scheduler == CODERS_SCHED_EDF)
 		return (coder->last_compiling_at + coder->data->time_to_burnout);
 	printf("uknown scheduler!");
